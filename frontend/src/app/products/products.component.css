@@ -1,0 +1,4 @@
+.icon-cross {
+    display: flex; /* Use flexbox */
+    gap: 40px; /* Add some space between buttons */
+}

@@ -1,0 +1,100 @@
+<app-header></app-header>
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Cart</h1>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="untree_co-section before-footer-section">
+<div class="container">
+  <div class="row mb-5">
+    <form class="col-md-8" method="post">
+      <div class="site-blocks-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="product-thumbnail">Image</th>
+              <th class="product-name">Product</th>
+              <th class="product-price">Price</th>
+              <th class="product-quantity">Quantity</th>
+              <th class="product-total">Total</th>
+              <th class="product-remove">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productsData">
+              <td class="product-thumbnail">
+                <img [src]="product.imageUrl" alt="Image" class="img-fluid">
+              </td>
+              <td class="product-name">
+                <h2 class="h5 text-black">{{ product.productName }}</h2>
+              </td>
+              <td>{{ product.price }}</td>
+              <td>
+                <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-black decrease" type="button">&minus;</button>
+                  </div>
+                  <input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-black increase" type="button">&plus;</button>
+                  </div>
+                </div>
+
+              </td>
+              <td>{{ product.price }}</td>
+              <td><a href="#"  class="btn btn-black btn-sm">X</a></td>
+            </tr>
+          </tbody>
+        </table>
+        
+     
+      </div>
+    </form>
+    <div class="p-3 p-lg-5 border bg-white col-md-4">
+      <table class="table site-block-order-table mb-5">
+        <thead>
+          <th>Product</th>
+          <th>Total</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of productsData">
+            <td>{{ product.productName }}</td>
+            <td>&#8377;&nbsp;{{ product.price }}</td>
+          </tr>
+          <tr>
+            <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+            <td class="text-black font-weight-bold"><strong>&#8377; &nbsp;{{ cartTotal }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="form-group">
+        <a href="check-out" class="btn  btn-lg py-1 btn-block text-black"  style="background-color: darkcyan;">Place Order</a>
+      </div>
+
+    </div>
+    <div *ngIf="productsData && productsData.products && productsData.products.length">
+      <h2>Cart</h2>
+      <div *ngFor="let product of productsData.products">
+      </div>
+      <div>
+        <h3>Total: {{ cartTotal }}</h3>
+      </div>
+    </div>
+    
+  </div>
+</div>
+</div>
+<app-footer></app-footer>

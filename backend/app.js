@@ -20,8 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/images', express.static(path.join(__dirname, '../frontend/src/assets/images')));
-app.use('/assets/images', express.static(path.join(__dirname, '../frontend/angular-app/src/assets/images')));
-app.use('/assets/css', express.static(path.join(__dirname, '../frontend/angular-app/src/assets/css')));
+app.use('/assets/images', express.static(path.join(__dirname, '../frontend/src/assets/images')));
+app.use('/assets/css', express.static(path.join(__dirname, '../frontend/src/assets/css')));
 
 app.use(cors({
 }));
