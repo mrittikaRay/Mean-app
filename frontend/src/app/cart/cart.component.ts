@@ -54,6 +54,15 @@ export class CartComponent implements OnInit {
       );
   }
 
+  removeFromcart(productId:string) {
+    this.httpclient.delete<any>('http://localhost:3000/cart/delete'+productId)
+      .subscribe((response)=> {
+        console.log(response);
+        this.fetchData();
+        
+      })
+  }
+
 
   // calculateTotal(): void {
   //   this.cartTotal = this.productsData.products.reduce((total: number, product: any) => {

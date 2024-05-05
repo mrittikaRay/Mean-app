@@ -54,7 +54,7 @@
 
               </td>
               <td>{{ product.price }}</td>
-              <td><a href="#"  class="btn btn-black btn-sm">X</a></td>
+              <td><button (click)="removeFromcart(product._id)"  class="btn btn-black btn-sm">X</button></td>
             </tr>
           </tbody>
         </table>
@@ -85,9 +85,9 @@
       </div>
 
     </div>
-    <div *ngIf="productsData && productsData.products && productsData.products.length">
+    <div >
       <h2>Cart</h2>
-      <div *ngFor="let product of productsData.products">
+      <div>
       </div>
       <div>
         <h3>Total: {{ cartTotal }}</h3>

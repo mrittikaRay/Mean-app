@@ -49,18 +49,28 @@ exports.showCartData = async (req, res) => {
     
     
 
-exports.removeFromCart = async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        let cart = await cartModel.findOne(productId); 
-        if (!cart) {
-            return res.status(404).json({ error: 'Cart not found' });
+    exports.removeFromCart = async (req, res) => {
+        try {
+            const productId = req.params.productId;
+            
+            // Find the cart that contains the product to be removed
+            let cart = await cartModel.findOne({ 'products._id': productId }); 
+            
+            if (!cart) {
+                return res.status(404).json({ error: 'Cart not found' });
+            }
+            
+            // Remove the product from the cart's products array
+            cart.products = cart.products.filter(item => item._id.toString() !== productId);
+            
+            // Save the updated cart
+            await cart.save();
+            
+            // Send success response
+            res.json({ message: 'Product removed from cart successfully' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Internal server error' });
         }
-        cart.products = cart.products.filter(item => item.toString() !== productId);
-        await cart.save();
-        res.json({ message: 'Product removed from cart successfully' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+    };
+    
