@@ -2,13 +2,15 @@
 <div class="hero">
     <div class="container">
         <div class="row justify-content-between">
-            <div class="col-lg-5">
+            <div class="col-lg-2">
                 <div class="intro-excerpt">
-                    <h1>Cart</h1>
+                  <img width="70" height="70" src="https://img.icons8.com/external-vectorslab-flat-vectorslab/53/external-16-shopping-and-ecommerce-vectorslab-flat-vectorslab.png" alt="external-16-shopping-and-ecommerce-vectorslab-flat-vectorslab"/>
+
                 </div>
             </div>
-            <div class="col-lg-7">
-                
+            <div class="col-lg-10">
+              <h1>Cart</h1>
+
             </div>
         </div>
     </div>
@@ -53,8 +55,9 @@
                 </div>
 
               </td>
-              <td>{{ product.price }}</td>
-              <td><button (click)="removeFromcart(product._id)"  class="btn btn-black btn-sm">X</button></td>
+              <td>{{ product._id }}</td>
+              <td><a (click)="removeFromCart(product._id)"  class="btn btn-black btn-sm">X</a></td>
+              <!-- <td>{{product._id}}</td> -->
             </tr>
           </tbody>
         </table>
@@ -65,8 +68,10 @@
     <div class="p-3 p-lg-5 border bg-white col-md-4">
       <table class="table site-block-order-table mb-5">
         <thead>
+          <tr>
           <th>Product</th>
           <th>Total</th>
+          </tr>
         </thead>
         <tbody>
           <tr *ngFor="let product of productsData">
