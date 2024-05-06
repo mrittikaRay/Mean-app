@@ -1,5 +1,6 @@
-.hero[_ngcontent-ng-c3302357095] .intro-excerpt[_ngcontent-ng-c3302357095] {
-    position: relative;
-    z-index: 1;
-    padding-left: 140px;
+@media (min-width: 992px) {
+    .hero .intro-excerpt {
+      max-width: 450px;
+      padding-left: 127px;
+    }
   }
