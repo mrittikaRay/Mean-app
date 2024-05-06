@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -22,7 +23,7 @@ interface CartData {
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule,HttpClientModule,HeaderComponent,FooterComponent],
+  imports: [CommonModule,HttpClientModule,HeaderComponent,FooterComponent,FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -30,6 +31,8 @@ export class CartComponent implements OnInit {
   httpclient = inject(HttpClient);
   cartTotal: number = 0;
   productsData: any = [];
+  productQuantities: { [productId: string]: number } = {};
+
 
   constructor(
     private route: ActivatedRoute,
@@ -57,7 +60,7 @@ export class CartComponent implements OnInit {
       );
   }
 
-  removeFromCart( productId: any): void {
+  removeFromCart(productId: any): void {
     if (!productId) {
       console.error('Product ID is undefined');
       return;
@@ -72,6 +75,27 @@ export class CartComponent implements OnInit {
         
       );
   }
+
+  increaseQuantity(productId: string): void {
+    if (!this.productQuantities[productId]) {
+      this.productQuantities[productId] = 1; 
+    } else {
+      this.productQuantities[productId]++; 
+    }
+  }
+  
+  decreaseQuantity(productId: string): void {
+    const currentQuantity = this.getQuantity(productId);
+    if (currentQuantity > 1) {
+      this.productQuantities[productId]--; 
+    }
+  }
+  
+  getQuantity(productId: any): number {    
+    return this.productQuantities[productId] || 1; 
+  }
+
+
   
 
 

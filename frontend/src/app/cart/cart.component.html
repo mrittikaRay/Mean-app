@@ -42,20 +42,47 @@
               <td class="product-name">
                 <h2 class="h5 text-black">{{ product.productName }}</h2>
               </td>
-              <td>{{ product.price }}</td>
-              <td>
+              <td>&#8377; {{ product.price }}</td>
+              <!-- <td>
                 <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
                   <div class="input-group-prepend">
                     <button class="btn btn-outline-black decrease" type="button">&minus;</button>
                   </div>
-                  <input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                  <input type="text" class="form-control text-center quantity-amount" value="1"  placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
                   <div class="input-group-append">
                     <button class="btn btn-outline-black increase" type="button">&plus;</button>
                   </div>
                 </div>
 
+              </td> -->
+              <td>
+                <!-- <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-black decrease" type="button" (click)="decreaseQuantity(product._id)">-</button>
+                  </div>
+
+                  <input type="number" class="form-control text-center quantity-amount" [(ngModel)]="getQuantity(product._id)" readonly placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-black increase" type="button" (click)="increaseQuantity(product._id)">+</button>
+                  </div>
+                </div> -->
+                <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-black decrease" type="button" (click)="decreaseQuantity(product._id)" [disabled]="getQuantity(product._id) === 1">-</button>
+                  </div>
+                  
+                
+                  <input type="number" class="form-control text-center quantity-amount" [value]="getQuantity(product._id)" readonly placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-black increase" type="button" (click)="increaseQuantity(product._id)">+</button>
+                  </div>
+                </div>
+                
+                
               </td>
-              <td>{{ product._id }}</td>
+              
+              <td>&#8377; {{ product.price }} </td>
               <td><a (click)="removeFromCart(product._id)"  class="btn btn-black btn-sm">X</a></td>
               <!-- <td>{{product._id}}</td> -->
             </tr>
