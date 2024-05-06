@@ -57,8 +57,7 @@ export class CartComponent implements OnInit {
           console.log(data);
           this.productsData = data.flatMap(cartItem => cartItem.products);
           console.log(this.productsData);
-          
-          // this.calculateTotal();
+          this.calculateCartTotal(); 
         },
         
       );
@@ -88,6 +87,8 @@ export class CartComponent implements OnInit {
     }
     this.updateProductTotalPrice(productId);
     this.setQuantityUpdated(productId, true); 
+    this.calculateCartTotal(); // Recalculate cart total after increasing quantity
+
   }
 
   decreaseQuantity(productId: string): void { 
@@ -99,6 +100,8 @@ export class CartComponent implements OnInit {
     }
     this.updateProductTotalPrice(productId);
     this.setQuantityUpdated(productId, true); 
+    this.calculateCartTotal(); // Recalculate cart total after decreasing quantity
+
   }
  
   getQuantity(productId: any): number {    
@@ -126,11 +129,12 @@ export class CartComponent implements OnInit {
   
 
 
-  // calculateTotal(): void {
-  //   this.cartTotal = this.productsData.products.reduce((total: number, product: any) => {
-  //     return total + product.price;
-  //   }, 0);
-  // }
+  calculateCartTotal(): void {
+    this.cartTotal = this.productsData.reduce((total: number, product: any) => {
+      return total + (product.totalPrice || product.price); // Add total price or default to product price
+    }, 0);
+    console.log('Total cart price:', this.cartTotal);
+  }
   
   
   
