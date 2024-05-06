@@ -32,6 +32,9 @@ export class CartComponent implements OnInit {
   cartTotal: number = 0;
   productsData: any = [];
   productQuantities: { [productId: string]: number } = {};
+  totalPrice?: number;
+  quantityUpdated?: boolean;
+
 
 
   constructor(
@@ -43,6 +46,7 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     
     this.fetchData();
+
 
   }
 
@@ -65,7 +69,6 @@ export class CartComponent implements OnInit {
       console.error('Product ID is undefined');
       return;
     }
-    
     this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
       .subscribe(
         (response) => {
@@ -80,20 +83,44 @@ export class CartComponent implements OnInit {
     if (!this.productQuantities[productId]) {
       this.productQuantities[productId] = 1; 
     } else {
-      this.productQuantities[productId]++; 
+      this.productQuantities[productId]++;   
+      console.log(this.productQuantities[productId]);
     }
+    this.updateProductTotalPrice(productId);
+    this.setQuantityUpdated(productId, true); 
   }
-  
-  decreaseQuantity(productId: string): void {
+
+  decreaseQuantity(productId: string): void { 
     const currentQuantity = this.getQuantity(productId);
     if (currentQuantity > 1) {
       this.productQuantities[productId]--; 
+      console.log(this.productQuantities[productId]);
+       this.productQuantities[productId]
     }
+    this.updateProductTotalPrice(productId);
+    this.setQuantityUpdated(productId, true); 
   }
-  
+ 
   getQuantity(productId: any): number {    
     return this.productQuantities[productId] || 1; 
   }
+
+  updateProductTotalPrice(productId: string): void {
+    const product = this.productsData.find((p: any) => p._id === productId);
+    if (product) {
+      product.totalPrice = product.price * this.productQuantities[productId];
+      console.log(`Total price for product ${productId}: ${product.totalPrice}`);
+    }
+  }
+
+  setQuantityUpdated(productId: string, value: boolean): void {
+    const product = this.productsData.find((p:any) => p._id === productId);
+    if (product) {
+      product.quantityUpdated = value; 
+    }
+  }
+  
+  
 
 
   
