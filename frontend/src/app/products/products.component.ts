@@ -3,15 +3,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
 import { CartService } from '../cart.service';
 
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,HeaderComponent,FooterComponent],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

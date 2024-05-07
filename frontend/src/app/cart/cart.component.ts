@@ -3,8 +3,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../cart.service';
@@ -24,7 +22,7 @@ interface CartData {
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule,HttpClientModule,HeaderComponent,FooterComponent,FormsModule],
+  imports: [CommonModule,HttpClientModule,FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -139,7 +137,8 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/check-out'], {
       queryParams: {
         items: JSON.stringify(this.productsData),
-        quantities: JSON.stringify(this.productQuantities)
+        quantities: JSON.stringify(this.productQuantities),
+        
       }
     });
   }

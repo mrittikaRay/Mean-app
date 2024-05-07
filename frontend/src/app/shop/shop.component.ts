@@ -4,14 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
 import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule,HeaderComponent,FooterComponent],
+  imports: [CommonModule],
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })

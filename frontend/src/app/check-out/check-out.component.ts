@@ -1,10 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
 interface CartItem {
   productName: string;
@@ -21,7 +18,7 @@ interface CartItem {
 @Component({
   selector: 'app-check-out',
   standalone: true,
-  imports: [HeaderComponent,FooterComponent,HttpClientModule,CommonModule],
+  imports: [HttpClientModule,CommonModule],
   templateUrl: './check-out.component.html',
   styleUrl: './check-out.component.css'
 })
@@ -31,13 +28,11 @@ export class CheckOutComponent implements OnInit{
   items: CartItem[] = [];
   totalPrice: number = 0;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute,private router: Router) {}
 
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      console.log('Received items:', params['items']);
-      console.log('Received quantities:', params['quantities']);
       this.items = JSON.parse(params['items']);
       this.calculateTotalPrice();
     });
@@ -47,4 +42,15 @@ export class CheckOutComponent implements OnInit{
   calculateTotalPrice(): void {
     this.totalPrice = this.items.reduce((total, item) => total + item.totalPrice, 0);
   }
+
+  goToInvoice(): void {
+    this.router.navigate(['/invoice'], {
+      queryParams: {
+        items: JSON.stringify(this.items),
+        totalPrice: this.totalPrice
+      }
+    });
+  }
+
+  
 }
