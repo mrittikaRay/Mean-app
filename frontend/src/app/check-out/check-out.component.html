@@ -184,14 +184,14 @@
                 <th>Total</th>
               </thead>
               <tbody>
-                <tr *ngFor="let product of productsData">
-                  <td>{{product.productName}}</td>
-                  <td>{{product.price}}</td>
+                <tr *ngFor="let item of items">
+                  <td>{{item.productName }}</td>
+                  <td>&#8377; {{item.totalPrice}}</td>
                 </tr>
                 
                 <tr>
                   <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                  <td class="text-black font-weight-bold"><strong>$350.00</strong></td>
+                  <td class="text-black font-weight-bold"><strong>&#8377; {{totalPrice}}</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -233,6 +233,11 @@
                 </div>
               </div>
             </form>
+
+            <div class="form-group">
+              <a href="invoice"  class="btn  btn-lg py-1 btn-block text-black"  style="background-color: darkcyan;">Pay Amount</a>
+            </div>
+      
 
           </div>
         </div>

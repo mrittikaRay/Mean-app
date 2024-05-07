@@ -132,6 +132,18 @@ export class CartComponent implements OnInit {
     }
   }
 
+  goToCheckout(): void {
+    this.productsData.forEach((product: any) => {
+      product.totalPrice = product.price * (this.productQuantities[product._id] || 1);
+    });
+    this.router.navigate(['/check-out'], {
+      queryParams: {
+        items: JSON.stringify(this.productsData),
+        quantities: JSON.stringify(this.productQuantities)
+      }
+    });
+  }
+
  
   
  
