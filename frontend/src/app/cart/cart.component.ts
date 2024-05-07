@@ -1,4 +1,4 @@
-import { Component, OnInit ,inject} from '@angular/core';
+import { Component, OnInit ,inject,EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CartService } from '../cart.service';
 
 
 
@@ -34,19 +35,26 @@ export class CartComponent implements OnInit {
   productQuantities: { [productId: string]: number } = {};
   totalPrice?: number;
   quantityUpdated?: boolean;
+  cartItems: any[] = [];
+
+
+
 
 
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cartService : CartService
 
-  ) { }
+  ) { 
+    this.cartItems = this.cartService.getCartItems();
+
+  }
 
   ngOnInit(): void {
     
     this.fetchData();
-
 
   }
 
@@ -57,7 +65,7 @@ export class CartComponent implements OnInit {
           console.log(data);
           this.productsData = data.flatMap(cartItem => cartItem.products);
           console.log(this.productsData);
-          this.calculateCartTotal(); 
+          this.calculateCartTotal();
         },
         
       );
@@ -73,9 +81,10 @@ export class CartComponent implements OnInit {
         (response) => {
           console.log(response);
           this.fetchData(); 
-        },
-        
-      );
+          this.cartService.removeFromCart(productId);
+
+        });
+
   }
 
   increaseQuantity(productId: string): void {
@@ -122,8 +131,10 @@ export class CartComponent implements OnInit {
       product.quantityUpdated = value; 
     }
   }
+
+ 
   
-  
+ 
 
 
   

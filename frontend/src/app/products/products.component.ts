@@ -1,10 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject,Output , EventEmitter} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { CartService } from '../cart.service';
+
 
 @Component({
   selector: 'app-products',
@@ -20,8 +22,11 @@ export class ProductsComponent implements OnInit {
   data : any = [];
   message: string | null = null; 
 
+
+
   constructor(
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) {}
   
 
@@ -35,6 +40,7 @@ export class ProductsComponent implements OnInit {
     .subscribe((data) =>{
       console.log(data);
       this.data = data;
+
     });
   }
 
@@ -52,6 +58,8 @@ export class ProductsComponent implements OnInit {
             confirmButtonText: 'OK'
           });
           this.fetchData(); 
+          this.cartService.addToCart(productId);
+
         },
       );
   }
