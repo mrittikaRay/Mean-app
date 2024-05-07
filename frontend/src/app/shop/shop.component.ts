@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-shop',
@@ -20,7 +21,9 @@ export class ShopComponent implements OnInit {
   loading: boolean = true;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService
+
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +56,8 @@ export class ShopComponent implements OnInit {
             confirmButtonText: 'OK'
           });
           this.showProductDetails(productId); 
+          this.cartService.addToCart(productId);
+
         },
       );
   }
