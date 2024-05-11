@@ -2,17 +2,32 @@ const cartModel = require('../models/cart');
 const productModel = require('../models/products');
 
  
+// exports.showCartData = async (req, res) => {
+//     try {
+//         const userId = req.user._id; 
+        
+//         const cart = await cartModel.findOne({ userId }).populate('products');
+        
+//         if (!cart) {
+//             return res.json({ message: 'Cart is empty' });
+//         }
+
+//         res.json(cart);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// };
+
 exports.showCartData = async (req, res) => {
     try {
-        const userId = req.user._id; 
-        
-        const cart = await cartModel.findOne({ userId }).populate('products');
-        
-        if (!cart) {
-            return res.json({ message: 'Cart is empty' });
+        const cartData = await cartModel.find();
+
+        if (!cartData) {
+            return res.json({});
         }
 
-        res.json(cart);
+        res.json(cartData);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
@@ -54,9 +69,8 @@ exports.addToCart = async (req, res) => {
     exports.removeFromCart = async (req, res) => {
         try {
             const productId = req.params.productId;
-            const userId = req.user._id;
             
-            let cart = await cartModel.findOne({userId, 'products._id': productId }); 
+            let cart = await cartModel.findOne({'products._id': productId }); 
             
             if (!cart) {
                 return res.status(404).json({ error: 'Cart not found' });

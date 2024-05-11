@@ -58,32 +58,33 @@ export class CartComponent implements OnInit {
 
   }
 
-  fetchData(): void {
 
-    // this.httpclient.get<any[]>('http://localhost:3000/cart')
-    //   .subscribe((data) => {
-    //       console.log(data);
-    //       this.productsData = data.flatMap(cartItem => cartItem.products);
-    //       console.log(this.productsData);
-    //       this.calculateCartTotal();
-    //     },
+
+  fetchData(): void {
+    this.httpclient.get<any[]>('http://localhost:3000/cart')
+      .subscribe((data) => {
+          console.log(data);
+          this.productsData = data.flatMap(cartItem => cartItem.products);
+          console.log(this.productsData);
+          
+        },
         
-    //   );
+      );
   }
 
   removeFromCart(productId: any): void {
-    // if (!productId) {
-    //   console.error('Product ID is undefined');
-    //   return;
-    // }
-    // this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
-    //   .subscribe(
-    //     (response) => {
-    //       console.log(response);
-    //       this.fetchData(); 
-    //       this.cartService.removeFromCart(productId);
+    if (!productId) {
+      console.error('Product ID is undefined');
+      return;
+    }
+    this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.fetchData(); 
+          this.cartService.removeFromCart(productId);
 
-    //     });
+        });
 
   }
 
