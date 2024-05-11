@@ -62,15 +62,30 @@ export class CartComponent implements OnInit {
 
   fetchData(): void {
     this.httpclient.get<any[]>('http://localhost:3000/cart')
-      .subscribe((data) => {
+      .subscribe({
+        next: (data) => {
           console.log(data);
-          this.productsData = data.flatMap(cartItem => cartItem.products);
-          console.log(this.productsData);
+          const allProducts = data.flatMap(cartItem => cartItem.products);
+          console.log(allProducts);
+
+          this.productsData = allProducts.map(item => ({
+            product: item.product,
+            quantity: item.quantity,
+            totalValue: item.quantity * item.product.price 
+          }));
           
+
+          if(this.productsData){
+
+          }
         },
-        
-      );
-  }
+        error: (error) => {
+          console.error('Error fetching cart data:', error);
+        }
+      });
+}
+
+
 
   removeFromCart(productId: any): void {
     if (!productId) {
@@ -82,8 +97,6 @@ export class CartComponent implements OnInit {
         (response) => {
           console.log(response);
           this.fetchData(); 
-          this.cartService.removeFromCart(productId);
-
         });
 
   }
