@@ -22,10 +22,7 @@ import { error } from 'console';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent{
-  // httpclient = inject(HttpClient)
-  // email: string = '';
-  // password: string = '';
-  // errorMessage: string = '';
+ 
 
   
 
@@ -43,10 +40,22 @@ export class LoginComponent{
 
   signIn(e: Event){
     this.authservice.signIn(this.form.value).subscribe({
-      next:() =>{
-        this.router.navigate(['/'])
+      next:(response) =>{
+        const message = response.message.toString();
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: message,
+            confirmButtonText: 'OK'
+          });
+        this.router.navigate(['home'])
       },error(error: HttpErrorResponse){
-        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: "Login failed",
+          confirmButtonText: 'OK'
+        })
       }
     })
   }

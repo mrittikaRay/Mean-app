@@ -26,19 +26,14 @@ exports.addToCart = async (req, res) => {
     try {
         const productId = req.params.productId;
 
-        const userId = req.user.userId;
-
         const product = await productModel.findById(productId);
-
         if (!product) {
             return res.status(404).json({ error: 'Product not found' });
         }
 
-        let cart = await cartModel.findOne({ userId });
-
+        let cart = await cartModel.findOne(); 
         if (!cart) {
             cart = new cartModel({
-                userId,
                 products: []
             });
         }
