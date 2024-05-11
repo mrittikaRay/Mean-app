@@ -74,10 +74,6 @@ export class CartComponent implements OnInit {
             totalValue: item.quantity * item.product.price 
           }));
           
-
-          if(this.productsData){
-
-          }
         },
         error: (error) => {
           console.error('Error fetching cart data:', error);
