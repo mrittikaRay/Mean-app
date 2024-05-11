@@ -48,7 +48,9 @@ export class ProductsComponent implements OnInit {
 
   addToCart(event:Event,productId: string): void {
     event.preventDefault();
-    this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
+    const token = localStorage.getItem('token');
+    if(token){
+      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
       .subscribe((response) => {
           console.log(response);
           const message = response.message.toString();
@@ -61,6 +63,17 @@ export class ProductsComponent implements OnInit {
           this.fetchData(); 
         },
       );
+    }
+    else{
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: "session expired login",
+        confirmButtonText: 'OK'
+      });
+      this.router.navigate(['/'])
+    }
+    
   }
 
 
