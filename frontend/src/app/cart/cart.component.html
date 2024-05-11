@@ -82,8 +82,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of productsData">
-            <td>{{ product.productName }}</td>
-            <td>&#8377;&nbsp;{{ product.quantityUpdated ? product.totalPrice : product.price }}</td>
+            <td>{{ product.product.productName }}</td>
+            <td>&#8377;&nbsp;{{product.totalValue}}</td>
           </tr>
           <tr>
             <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
