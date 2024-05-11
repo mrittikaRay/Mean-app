@@ -5,14 +5,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
-import { error } from 'console';
-import {jwtDecode} from 'jwt-decode'
-
-
-
-
-
-
 
 
 @Component({
@@ -23,20 +15,15 @@ import {jwtDecode} from 'jwt-decode'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent{
- 
-
-  
 
   constructor( 
     private router: Router,
     private authservice : AuthService,
     private formbuilder : FormBuilder) { }
 
- 
-
   form : FormGroup = this.formbuilder.group({
-    userEmail : ['',Validators.required],
-    password : ['', Validators.required]
+    userEmail : ['', Validators.required],
+    password  : ['', Validators.required]
   })
 
   signIn(e: Event){
@@ -44,16 +31,21 @@ export class LoginComponent{
       next:(response) =>{
         const message = response.message.toString();
           Swal.fire({
-            icon: 'success',
+            icon : 'success',
             title: 'Success',
-            text: message,
+            text :  message,
             confirmButtonText: 'OK'
           });
           const token = response.token;
 
         localStorage.setItem('token', token);
         console.log(token);
-        this.router.navigate(['home'])
+        if(token){
+          this.router.navigate(['home']);
+        }else{
+          this.router.navigate(['/']);
+        }
+
       },error(error: HttpErrorResponse){
         Swal.fire({
           icon: 'error',
@@ -64,9 +56,7 @@ export class LoginComponent{
       }
     })
   }
-
  
-  
 }
 
 

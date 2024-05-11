@@ -26,6 +26,10 @@ export class ProductsComponent implements OnInit {
 
 
   ngOnInit(): void {
+      const token = localStorage.getItem('token');
+      console.log(token);
+      
+
       this.fetchData();
   }
 
