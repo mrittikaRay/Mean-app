@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
 import { error } from 'console';
+import {jwtDecode} from 'jwt-decode'
 
 
 
@@ -48,6 +49,10 @@ export class LoginComponent{
             text: message,
             confirmButtonText: 'OK'
           });
+          const token = response.token;
+
+        localStorage.setItem('token', token);
+        console.log(token);
         this.router.navigate(['home'])
       },error(error: HttpErrorResponse){
         Swal.fire({
