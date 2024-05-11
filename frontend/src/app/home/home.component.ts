@@ -1,6 +1,8 @@
 import { Component ,OnInit , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 
 interface Product {
@@ -17,7 +19,7 @@ interface Product {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,HttpClientModule],
+  imports: [CommonModule,HttpClientModule,HeaderComponent,FooterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   schemas : [CUSTOM_ELEMENTS_SCHEMA]

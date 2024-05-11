@@ -1,4 +1,6 @@
 import { Component, OnInit, inject,Output , EventEmitter} from '@angular/core';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
@@ -9,7 +11,7 @@ import { CartService } from '../cart.service';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule,HeaderComponent,FooterComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
@@ -56,7 +58,7 @@ export class ProductsComponent implements OnInit {
             confirmButtonText: 'OK'
           });
           this.fetchData(); 
-          this.cartService.addToCart(productId);
+          // this.cartService.addToCart(productId);
 
         },
       );

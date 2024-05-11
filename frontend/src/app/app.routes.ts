@@ -8,12 +8,19 @@ import { ShopComponent } from './shop/shop.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { LoginComponent } from './login/login.component';
+
 
 
 export const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+    },
+
+    {
+        path: 'login',
+        component: LoginComponent,
     },
     {
         path: 'products',
@@ -45,6 +52,10 @@ export const routes: Routes = [
     {
         path: 'register',
         component: RegistrationComponent 
+    },
+    {
+        path: 'login',
+        component: LoginComponent 
     },
     {
         path: 'check-out',

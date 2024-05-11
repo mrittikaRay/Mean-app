@@ -2,6 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute,Router } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 interface CartItem {
   productName: string;
@@ -18,7 +20,7 @@ interface CartItem {
 @Component({
   selector: 'app-check-out',
   standalone: true,
-  imports: [HttpClientModule,CommonModule],
+  imports: [HttpClientModule,CommonModule,HeaderComponent,FooterComponent],
   templateUrl: './check-out.component.html',
   styleUrl: './check-out.component.css'
 })

@@ -1,12 +1,16 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var createError = require('http-errors');
-var cors        = require('cors')
+var cors        = require('cors');
+
+const session = require('express-session');
+const MongoStore = require('connect-mongo')
 
 const db = require('./db');
-const productRoutes = require('./routes/index')
+const productRoutes = require('./routes/index');
 
 var app = express();
 
@@ -14,8 +18,28 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
 app.use(express.json());
+
+const corsOptions = {
+  origin : 'http://localhost:4200',
+  credentials: true,
+}
+
+app.use(cors(corsOptions));
+
+app.use(session({
+  secret : process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: "mongodb://localhost:27017/MyEcommerce",
+    maxAge : 100* 60 * 60 *24,
+    
+  }),
+  cookie: {secure: "auto",httpOnly: "true", maxAge: 100*60*60*24}
+}))
+
+app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,17 +47,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets/images', express.static(path.join(__dirname, '../frontend/src/assets/images')));
 app.use('/assets/css', express.static(path.join(__dirname, '../frontend/src/assets/css')));
 
-app.use(cors({
-}));
 
-app.options('*',cors());
-var allowCrossDomain = function(req,res,next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();  
-}
-app.use(allowCrossDomain);
+// var allowCrossDomain = function(req,res,next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   next();  
+// }
+// app.use(allowCrossDomain);
 
 // Routes setup
 app.use('/', productRoutes);

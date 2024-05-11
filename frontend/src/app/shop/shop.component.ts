@@ -1,6 +1,8 @@
 
 import { Component, OnInit,inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -9,7 +11,7 @@ import { CartService } from '../cart.service';
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,HeaderComponent,FooterComponent],
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })

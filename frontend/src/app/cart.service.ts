@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth.service';
+import { inject } from 'vue';
 
 // @Injectable({
 //   providedIn: 'root'
@@ -99,6 +101,8 @@ import { BehaviorSubject } from 'rxjs';
     getCartItems(): any[] {
       return this.cartItems;
     }
+
+   
   
     private loadCartItems(): void {
       const storedCartItems = this.getStoredCartItems();
