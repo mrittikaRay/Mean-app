@@ -1,10 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject ,PLATFORM_ID,Inject} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-products',
@@ -21,16 +22,18 @@ export class ProductsComponent implements OnInit {
   message: string | null = null; 
 
   constructor(
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
 
   ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');
       console.log(token);
-      
+    }
 
-      this.fetchData();
+    this.fetchData();
   }
 
   fetchData(){
