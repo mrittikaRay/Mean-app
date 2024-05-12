@@ -14,6 +14,7 @@ router.get('/products/:productId', productController.getProductById);
 router.get('/cart',cartController.showCartData);
 router.post('/cart/add/:productId',cartController.addToCart);
 router.delete('/cart/delete/:productId', cartController.removeFromCart);
+router.put('/cart/update/:productId',cartController.updateQtyInCart);
 router.post('/user/register',userController.userRegister);
 router.post('/user/login',userController.userLogin);
 router.get('/is-authenticated',isAuthenticated,userController.authenticated)

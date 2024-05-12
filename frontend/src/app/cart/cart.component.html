@@ -47,14 +47,14 @@
                
                 <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
                   <div class="input-group-prepend">
-                    <button class="btn btn-outline-black decrease" type="button" (click)="decreaseQuantity(product._id)" >-</button>
+                    <button class="btn btn-outline-black decrease" type="button" (click)="decreaseQuantity(product.product._id,product.quantity)" >-</button>
                   </div>
                   
                 
                   <input type="number" class="form-control text-center quantity-amount" value="{{product.quantity}}" readonly  aria-label="Example text with button addon" aria-describedby="button-addon1">
                 
                   <div class="input-group-append">
-                    <button class="btn btn-outline-black increase" type="button" (click)="increaseQuantity(product._id)">+</button>
+                    <button class="btn btn-outline-black increase" type="button" (click)="increaseQuantity(product.product._id,product.quantity)">+</button>
                   </div>
                 </div>
                 

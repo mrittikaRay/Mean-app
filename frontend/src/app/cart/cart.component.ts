@@ -83,49 +83,67 @@ export class CartComponent implements OnInit {
 
 
 
+  // removeFromCart(productId: any): void {
+  //   if (!productId) {
+  //     console.error('Product ID is undefined');
+  //     return;
+  //   }
+  //   this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
+  //     .subscribe(
+  //       (response) => {
+  //         console.log(response);
+  //         this.fetchData(); 
+  //       });
+
+  // }
   removeFromCart(productId: any): void {
     if (!productId) {
       console.error('Product ID is undefined');
       return;
     }
     this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
-      .subscribe(
-        (response) => {
-          console.log(response);
-          this.fetchData(); 
-        });
-
+      .subscribe({
+        next: () => {
+        
+          this.productsData = this.productsData.filter((item:any) => item.product._id !== productId);
+        },
+        error: (error) => {
+          console.error('Error removing product from cart:', error);
+        }
+      });
   }
+  
+  
 
-  increaseQuantity(productId: string): void {
-    // if (!this.productQuantities[productId]) {
-    //   this.productQuantities[productId] = 1; 
-    // } else {
-    //   this.productQuantities[productId]++;   
-    //   console.log(this.productQuantities[productId]);
-    // }
-    // this.updateProductTotalPrice(productId);
-    // this.setQuantityUpdated(productId, true); 
-    // this.calculateCartTotal(); // Recalculate cart total after increasing quantity
+  increaseQuantity(productId: string, quantity: number): void {
+    const updatedQuantity = quantity + 1;
+    this.updateQuantityOnBackend(productId, updatedQuantity);
+}
 
-  }
+  decreaseQuantity(productId: string, quantity: number): void {
+    if (quantity > 1) {
+        const updatedQuantity = quantity - 1;
+        this.updateQuantityOnBackend(productId, updatedQuantity);
+    }
+}
 
-  decreaseQuantity(productId: string): void { 
-    // const currentQuantity = this.getQuantity(productId);
-    // if (currentQuantity > 1) {
-    //   this.productQuantities[productId]--; 
-    //   console.log(this.productQuantities[productId]);
-    //    this.productQuantities[productId]
-    // }
-    // this.updateProductTotalPrice(productId);
-    // this.setQuantityUpdated(productId, true); 
-    // this.calculateCartTotal(); // Recalculate cart total after decreasing quantity
 
-  }
- 
-  getQuantity(productId: any): number {    
-    return this.productQuantities[productId] || 1; 
-  }
+updateQuantityOnBackend(productId: string, quantity: number): void {
+  this.httpclient.put<any>(`http://localhost:3000/cart/update/${productId}`, { quantity })
+      
+      .subscribe({
+        next: (response) => {
+          
+        console.log('Quantity updated successfully:', response);  
+          this.fetchData();
+        },
+        error: (error) => {
+              console.error('Error updating quantity:', error);
+    }
+      });
+}
+  
+  
 
   updateProductTotalPrice(productId: string): void {
     // const product = this.productsData.find((p: any) => p._id === productId);
