@@ -27,30 +27,47 @@ interface CartItem {
 export class CheckOutComponent implements OnInit{
   httpclient = inject(HttpClient);
   cartTotal: number = 0;
-  items: CartItem[] = [];
+  cartData: any= [];
   totalPrice: number = 0;
 
   constructor(private route: ActivatedRoute,private router: Router) {}
 
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.items = JSON.parse(params['items']);
-      this.calculateTotalPrice();
-    });
-
+    
+    this.fetchData();
   }
 
-  calculateTotalPrice(): void {
-    this.totalPrice = this.items.reduce((total, item) => total + item.totalPrice, 0);
-  }
+  fetchData(): void {
+    this.httpclient.get<any[]>('http://localhost:3000/cart')
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          const allProducts = data.flatMap(cartItem => cartItem.products);
+          console.log(allProducts);
+
+          this.cartData = allProducts.map(item => ({
+            product: item.product,
+            quantity: item.quantity,
+            totalValue: item.quantity * item.product.price,
+          }));
+          this.updateProductTotalPrice()
+
+        },
+        error: (error) => {
+          console.error('Error fetching cart data:', error);
+        }
+      });
+}
+updateProductTotalPrice(): void {
+  this.cartTotal = this.cartData.reduce((total: number, product: any) => {
+    return total + (product.totalValue || 0); 
+  }, 0);
+  console.log('Total cart price:', this.cartTotal);
+}
 
   goToInvoice(): void {
     this.router.navigate(['/invoice'], {
-      queryParams: {
-        items: JSON.stringify(this.items),
-        totalPrice: this.totalPrice
-      }
     });
   }
 

@@ -33,7 +33,7 @@ export class CartComponent implements OnInit {
   cartTotal: number = 0;
   productsData: any = [];
   productQuantities: { [productId: string]: number } = {};
-  totalPrice?: number;
+  totalPrice: number = 0;
   quantityUpdated?: boolean;
   cartItems: any[] = [];
 
@@ -71,8 +71,9 @@ export class CartComponent implements OnInit {
           this.productsData = allProducts.map(item => ({
             product: item.product,
             quantity: item.quantity,
-            totalValue: item.quantity * item.product.price 
+            totalValue: item.quantity * item.product.price,
           }));
+          this.updateProductTotalPrice()
           
         },
         error: (error) => {
@@ -131,26 +132,19 @@ updateQuantityOnBackend(productId: string, quantity: number): void {
   
   
 
-  updateProductTotalPrice(productId: string): void {
-    // const product = this.productsData.find((p: any) => p._id === productId);
-    // if (product) {
-    //   product.totalPrice = product.price * this.productQuantities[productId];
-    //   console.log(`Total price for product ${productId}: ${product.totalPrice}`);
-    // }
+  updateProductTotalPrice(): void {
+    this.cartTotal = this.productsData.reduce((total: number, product: any) => {
+      return total + (product.totalValue || 0); 
+    }, 0);
+    console.log('Total cart price:', this.cartTotal);
   }
 
-  setQuantityUpdated(productId: string, value: boolean): void {
-    // const product = this.productsData.find((p:any) => p._id === productId);
-    // if (product) {
-    //   product.quantityUpdated = value; 
-    // }
-  }
-
+ 
   goToCheckout(): void {
     // this.productsData.forEach((product: any) => {
     //   product.totalPrice = product.price * (this.productQuantities[product._id] || 1);
     // });
-    // this.router.navigate(['/check-out'], {
+    this.router.navigate(['/check-out'])
     //   queryParams: {
     //     items: JSON.stringify(this.productsData),
     //     quantities: JSON.stringify(this.productQuantities),
@@ -167,12 +161,7 @@ updateQuantityOnBackend(productId: string, quantity: number): void {
   
 
 
-  calculateCartTotal(): void {
-    this.cartTotal = this.productsData.reduce((total: number, product: any) => {
-      return total + (product.totalPrice || product.price); // Add total price or default to product price
-    }, 0);
-    console.log('Total cart price:', this.cartTotal);
-  }
+  
   
   
   
