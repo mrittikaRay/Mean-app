@@ -82,20 +82,6 @@ export class CartComponent implements OnInit {
 }
 
 
-
-  // removeFromCart(productId: any): void {
-  //   if (!productId) {
-  //     console.error('Product ID is undefined');
-  //     return;
-  //   }
-  //   this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
-  //     .subscribe(
-  //       (response) => {
-  //         console.log(response);
-  //         this.fetchData(); 
-  //       });
-
-  // }
   removeFromCart(productId: any): void {
     if (!productId) {
       console.error('Product ID is undefined');
