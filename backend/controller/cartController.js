@@ -96,67 +96,66 @@ exports.removeFromCart = async (req, res) => {
     }
 };
 
-// exports.updateQtyInCart = async (req,res) =>{
-//     try{
-//         const productId = req.params.productId;
-//         console.log(productId);
-//         const { quantity } = req.body;
-
-//         let cart = await cartModel.findOne();
-
-//         if(!cart){
-//             return res.status(404).json({ error: 'Cart not found' });
-
-//         }
-
-//         const productIndex = cart.products.findIndex(item => item.product._id.toString() === productId);
-//             if (productIndex === -1) {
-//             return res.status(404).json({ error: 'Product not found in cart' });
-//             }
-
-//             cart.products[productIndex].quantity = quantity;
-//             await cart.save();
-
-//             res.json({ message: 'Quantity updated in cart successfully' });
-
-
-
-//     }catch(err){
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// }
-
-// cartController.js
-
-const cartModel = require('../models/cart');
-
-exports.updateQuantity = async (req, res) => {
-    try {
+exports.updateQtyInCart = async (req,res) =>{
+    try{
         const productId = req.params.productId;
+        console.log(productId);
         const { quantity } = req.body;
 
-        let cart = await cartModel.findOne({'products.product._id': productId }); 
-        
-        if (!cart) {
+        let cart = await cartModel.findOne();
+
+        if(!cart){
             return res.status(404).json({ error: 'Cart not found' });
+
         }
 
         const productIndex = cart.products.findIndex(item => item.product._id.toString() === productId);
-        if (productIndex === -1) {
+            if (productIndex === -1) {
             return res.status(404).json({ error: 'Product not found in cart' });
-        }
-        cart.products[productIndex].quantity = quantity;
+            }
 
-        // Save the updated cart document
-        await cart.save();
+            cart.products[productIndex].quantity = quantity;
+            await cart.save();
 
-        // Send success response
-        res.json({ message: 'Quantity updated successfully' });
-    } catch (err) {
+            res.json({ message: 'Quantity updated in cart successfully' });
+
+
+
+    }catch(err){
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
-};
+}
+
+// cartController.js
+
+
+// exports.updateQuantity = async (req, res) => {
+//     try {
+//         const productId = req.params.productId;
+//         const { quantity } = req.body;
+
+//         let cart = await cartModel.findOne({'products.product._id': productId }); 
+        
+//         if (!cart) {
+//             return res.status(404).json({ error: 'Cart not found' });
+//         }
+
+//         const productIndex = cart.products.findIndex(item => item.product._id.toString() === productId);
+//         if (productIndex === -1) {
+//             return res.status(404).json({ error: 'Product not found in cart' });
+//         }
+//         cart.products[productIndex].quantity = quantity;
+
+//         // Save the updated cart document
+//         await cart.save();
+
+//         // Send success response
+//         res.json({ message: 'Quantity updated successfully' });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// };
 
     
