@@ -3,17 +3,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit ,inject} from '@angular/core';;
 import { ActivatedRoute } from '@angular/router';
 
-interface CartItem {
-  productName: string;
-  productType: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-  available: boolean;
-  _id: string;
-  totalPrice: number;
-  quantityUpdated: boolean;
-}
 
 @Component({
   selector: 'app-invoice',
@@ -23,17 +12,21 @@ interface CartItem {
   styleUrl: './invoice.component.css'
 })
 export class InvoiceComponent implements OnInit{
-  items: CartItem[] = [];
+  httpclient = inject(HttpClient)
+  invoiceData: any = [];
   totalPrice: number = 0;
 
-  constructor(private route: ActivatedRoute,
-  ) {}
+  currentDate: Date;
+
+
+  constructor(
+  ) {
+    this.currentDate = new Date();
+
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.items = JSON.parse(params['items']);
-      this.totalPrice = parseFloat(params['totalPrice']);
-    });
+    this.fetchOrderDetails()
   }
 
   // getCurrentDateTime(): any {
@@ -41,6 +34,32 @@ export class InvoiceComponent implements OnInit{
   //   return this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss');
   // }
 
-  
+  fetchOrderDetails() : void{
+    this.httpclient.get<any[]>('http://localhost:3000/cart')
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          const allProducts = data.flatMap(cartItem => cartItem.products);
+          console.log(allProducts);
+
+          this.invoiceData = allProducts.map(item => ({
+            product: item.product,
+            quantity: item.quantity,
+            totalValue: item.quantity * item.product.price,
+          }));
+          this.updateProductTotalPrice()
+
+        },
+        error: (error) => {
+          console.error('Error fetching cart data:', error);
+        }
+      });
+  }
+
+  updateProductTotalPrice(){
+    this.totalPrice = this.invoiceData.reduce((total: Number, product: any) =>{
+      return total + (product.totalValue || 0);
+    }, 0)
+  }
 
 }
