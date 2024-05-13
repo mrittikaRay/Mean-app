@@ -72,9 +72,33 @@ export class CartComponent implements OnInit {
 
 
 
-  fetchData(): void {
+  // fetchData(): void {
 
   
+  //   this.httpclient.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
+  //     .subscribe({
+  //       next: (data) => {
+  //         console.log(data);
+  //         const allProducts = data.flatMap(cartItem => cartItem.products);
+  //         console.log(allProducts);
+  
+  //         this.productsData = allProducts.map(item => ({
+  //           product: item.product,
+  //           quantity: item.quantity,
+  //           totalValue: item.quantity * item.product.price,
+  //         }));
+  //         this.updateProductTotalPrice();
+  //         const currentCount = this.cartService.getCartCount();
+  //         // const newCount = currentCount - ;
+  //         this.cartService.updateCartCount(newCount);
+  //      },
+  //       error: (error) => {
+  //         console.error('Error fetching cart data:', error);
+  //       }
+  //     });
+  // }
+
+  fetchData(): void {
     this.httpclient.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
       .subscribe({
         next: (data) => {
@@ -88,13 +112,17 @@ export class CartComponent implements OnInit {
             totalValue: item.quantity * item.product.price,
           }));
           this.updateProductTotalPrice();
-          this.cartService.fetchDataAndUpdateCount(); 
-        },
+  
+          // Calculate new cart count
+          const newCount = this.productsData.reduce((total: number, product: { quantity: any; }) => total + (product.quantity || 0), 0);
+          this.cartService.updateCartCount(newCount);
+       },
         error: (error) => {
           console.error('Error fetching cart data:', error);
         }
       });
   }
+  
   
 
  

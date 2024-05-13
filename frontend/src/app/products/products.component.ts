@@ -69,8 +69,9 @@ export class ProductsComponent implements OnInit {
             
           });
           this.fetchData(); 
-          this.cartService.fetchDataAndUpdateCount(); 
-          
+          const currentCount = this.cartService.getCartCount();
+          const newCount = currentCount + 1;
+          this.cartService.updateCartCount(newCount);          
         },
       );
     }

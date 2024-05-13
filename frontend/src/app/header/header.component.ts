@@ -14,15 +14,13 @@ import { Subscription } from 'rxjs';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit, OnDestroy{
-  cartCount!: number;
+  cartCount: number = 0;
   private cartCountSubscription!: Subscription;
   httpclient = inject(HttpClient);
   cartData : any = []
 
   constructor(private cartService : CartService) {}
-  ngOnDestroy(): void {
-    this.cartCountSubscription.unsubscribe();
-  }
+  
 
   
   ngOnInit(): void {
@@ -33,35 +31,14 @@ export class HeaderComponent implements OnInit, OnDestroy{
     this.cartService.fetchDataAndUpdateCount();
   } 
 
-  fetchData(): void {
-    this.httpclient.get<any[]>('http://localhost:3000/cart')
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          const allProducts = data.flatMap(cartItem => cartItem.products);
-          console.log(allProducts);
+  ngOnDestroy(): void {
+    this.cartCountSubscription.unsubscribe();
+  }
 
-          this.cartData = allProducts.map(item => ({
-            product: item.product,
-            quantity: item.quantity,
-          }));
-          this.updateProductTotalPrice();
-          console.log();
-          
-        },
-        error: (error) => {
-          console.error('Error fetching cart data:', error);
-        }
-      });
-    };
+ 
 
 
-updateProductTotalPrice(): void {
-  this.cartCount = this.cartData.reduce((total: number, product: any) => {
-    return total + (product.quantity || 0); 
-  }, 0);
-  console.log( this.cartCount);
-}
+
  }
 
   
