@@ -74,7 +74,9 @@ export class CartComponent implements OnInit {
             quantity: item.quantity,
             totalValue: item.quantity * item.product.price,
           }));
-          this.updateProductTotalPrice()
+          this.updateProductTotalPrice();
+          this.cartService.fetchDataAndUpdateCount(); 
+
           
         },
         error: (error) => {
@@ -106,6 +108,8 @@ export class CartComponent implements OnInit {
   increaseQuantity(productId: string, quantity: number): void {
     const updatedQuantity = quantity + 1;
     this.updateQuantityOnBackend(productId, updatedQuantity);
+    this.cartService.fetchDataAndUpdateCount(); 
+
 }
 
   decreaseQuantity(productId: string, quantity: number): void {

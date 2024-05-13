@@ -1,4 +1,4 @@
-import { Component, OnInit, inject ,PLATFORM_ID,Inject, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, inject ,PLATFORM_ID,Inject} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
@@ -22,7 +22,6 @@ export class ProductsComponent implements OnInit {
   httpclient = inject(HttpClient);
   data : any = [];
   message: string | null = null; 
-  @Output() productAdded: EventEmitter<void> = new EventEmitter<void>();
 
 
   constructor(
