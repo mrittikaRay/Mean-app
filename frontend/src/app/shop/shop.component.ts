@@ -22,7 +22,7 @@ export class ShopComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cartService: CartService
+    // private cartService: CartService
 
   ) { }
 
@@ -56,7 +56,7 @@ export class ShopComponent implements OnInit {
             confirmButtonText: 'OK'
           });
           this.showProductDetails(productId); 
-          this.cartService.addToCart(productId);
+          // this.cartService.addToCart(productId);
 
         },
       );

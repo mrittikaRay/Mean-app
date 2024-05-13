@@ -1,4 +1,4 @@
-import { Component, OnInit, inject ,PLATFORM_ID,Inject} from '@angular/core';
+import { Component, OnInit, inject ,PLATFORM_ID,Inject, EventEmitter, Output} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { isPlatformBrowser } from '@angular/common';
+import { CartService } from '../cart.service';
+
 
 @Component({
   selector: 'app-products',
@@ -20,10 +22,13 @@ export class ProductsComponent implements OnInit {
   httpclient = inject(HttpClient);
   data : any = [];
   message: string | null = null; 
+  @Output() productAdded: EventEmitter<void> = new EventEmitter<void>();
+
 
   constructor(
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cartService: CartService
   ) {}
 
 
@@ -61,6 +66,8 @@ export class ProductsComponent implements OnInit {
             confirmButtonText: 'OK'
           });
           this.fetchData(); 
+          this.cartService.fetchDataAndUpdateCount(); 
+          
         },
       );
     }

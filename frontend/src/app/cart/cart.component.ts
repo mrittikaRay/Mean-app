@@ -36,25 +36,26 @@ export class CartComponent implements OnInit {
   totalPrice: number = 0;
   quantityUpdated?: boolean;
   cartItems: any[] = [];
-
-
-
-
+  cartCount!: number;
 
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private cartService : CartService
 
   ) { 
-    this.cartItems = this.cartService.getCartItems();
+
 
   }
 
   ngOnInit(): void {
     
     this.fetchData();
+    this.cartCount = this.cartService.getCartCount();
+
+    this.cartService.cartCount$.subscribe(count => {
+      this.cartCount = count;
+    });
 
   }
 
@@ -141,16 +142,7 @@ updateQuantityOnBackend(productId: string, quantity: number): void {
 
  
   goToCheckout(): void {
-    // this.productsData.forEach((product: any) => {
-    //   product.totalPrice = product.price * (this.productQuantities[product._id] || 1);
-    // });
     this.router.navigate(['/check-out'])
-    //   queryParams: {
-    //     items: JSON.stringify(this.productsData),
-    //     quantities: JSON.stringify(this.productQuantities),
-        
-    //   }
-    // });
   }
 
  

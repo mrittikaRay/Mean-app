@@ -5,6 +5,7 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 
 
+
 interface Product {
   _id: string;
   productName: string;
@@ -30,7 +31,7 @@ export class HomeComponent implements OnInit{
 
 
 
-  constructor(private httpclient: HttpClient
+  constructor(private httpclient: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -44,4 +45,5 @@ export class HomeComponent implements OnInit{
       this.data = data ;
      })
   }
+  
 }
