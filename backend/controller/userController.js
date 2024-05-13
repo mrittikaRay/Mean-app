@@ -28,38 +28,6 @@ exports.userRegister = async (req,res) =>{
 
 }
 
-
-// exports.userLogin = async (req, res) => {
-//     try {
-//         const { userEmail, password } = req.body;
-//         if (!userEmail || !password) {
-//             res.status(400).json({ message: 'Email and password are required' });
-//             return;
-//         }
-
-//         const user = await userModel.findOne({ userEmail });
-//         if (!user) {
-//             res.status(404).json({ message: 'User not found' });
-//             return;
-//         }
-
-//         if (user.password !== password) {
-//             res.status(401).json({ message: 'Incorrect password' });
-//             return;
-//         }
-//         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
-//         res.status(200).json({ message: 'Login successful', token });
-//         res.cookie("access_token", token,{httpOnly : false})
-//         .status(200)
-//         .json({ message: 'Login successful',data: user });
-
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// };
-
 exports.userLogin = async (req, res) => {
     try {
         const { userEmail, password } = req.body;

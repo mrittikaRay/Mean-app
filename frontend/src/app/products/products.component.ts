@@ -22,6 +22,7 @@ export class ProductsComponent implements OnInit {
   httpclient = inject(HttpClient);
   data : any = [];
   message: string | null = null; 
+  userId: any;
 
 
   constructor(
@@ -33,8 +34,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
-      console.log(token);
+       this.userId = localStorage.getItem('user._id');
     }
 
     this.fetchData();
@@ -46,6 +46,8 @@ export class ProductsComponent implements OnInit {
     .subscribe((data) =>{
       console.log(data);
       this.data = data;
+      console.log(this.userId);
+      
     });
   }
 
@@ -53,16 +55,18 @@ export class ProductsComponent implements OnInit {
   addToCart(event:Event,productId: string): void {
     event.preventDefault();
     const token = localStorage.getItem('token');
+    const userId = this.userId
     if(token){
-      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
+      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {userId})
       .subscribe((response) => {
           console.log(response);
           const message = response.message.toString();
+          console.log(this.userId)
           Swal.fire({
             icon: 'success',
             title: 'Success',
             text: message,
-            confirmButtonText: 'OK'
+            
           });
           this.fetchData(); 
           this.cartService.fetchDataAndUpdateCount(); 

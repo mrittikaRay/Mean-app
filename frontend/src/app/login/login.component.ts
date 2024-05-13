@@ -37,9 +37,13 @@ export class LoginComponent{
             confirmButtonText: 'OK'
           });
           const token = response.token;
+          const userId = response.data._id;
 
         localStorage.setItem('token', token);
+        localStorage.setItem('user._id', userId)
         console.log(token);
+        console.log(userId);
+        
         if(token){
           this.router.navigate(['home']);
         }else{
