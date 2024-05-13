@@ -120,6 +120,8 @@ export class CartComponent implements OnInit {
     if (quantity > 1) {
         const updatedQuantity = quantity - 1;
         this.updateQuantityOnBackend(productId, updatedQuantity);
+        this.cartService.updateCartCount(updatedQuantity);
+
     }
 }
 

@@ -34,10 +34,7 @@ export class InvoiceComponent implements OnInit{
 
   }
 
-  // getCurrentDateTime(): any {
-  //   const currentDate = new Date();
-  //   return this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss');
-  // }
+ 
 
   fetchOrderDetails() : void{
     
