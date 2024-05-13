@@ -69,6 +69,8 @@ export class CartComponent implements OnInit {
 
   fetchData(): void {
     const userId = this.userId;
+    console.log(userId);
+    
 
     this.httpclient.get<any[]>(`http://localhost:3000/cart/${userId}`)
       .subscribe({

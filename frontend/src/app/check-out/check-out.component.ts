@@ -42,25 +42,25 @@ export class CheckOutComponent implements OnInit{
   }
 
   fetchData(): void {
-    this.httpclient.get<any[]>('http://localhost:3000/cart')
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          const allProducts = data.flatMap(cartItem => cartItem.products);
-          console.log(allProducts);
+    // this.httpclient.get<any[]>('')
+    //   .subscribe({
+    //     next: (data) => {
+    //       console.log(data);
+    //       const allProducts = data.flatMap(cartItem => cartItem.products);
+    //       console.log(allProducts);
 
-          this.cartData = allProducts.map(item => ({
-            product: item.product,
-            quantity: item.quantity,
-            totalValue: item.quantity * item.product.price,
-          }));
-          this.updateProductTotalPrice()
+    //       this.cartData = allProducts.map(item => ({
+    //         product: item.product,
+    //         quantity: item.quantity,
+    //         totalValue: item.quantity * item.product.price,
+    //       }));
+    //       this.updateProductTotalPrice()
 
-        },
-        error: (error) => {
-          console.error('Error fetching cart data:', error);
-        }
-      });
+    //     },
+    //     error: (error) => {
+    //       console.error('Error fetching cart data:', error);
+    //     }
+    //   });
 }
 updateProductTotalPrice(): void {
   this.cartTotal = this.cartData.reduce((total: number, product: any) => {

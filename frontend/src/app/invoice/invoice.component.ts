@@ -38,35 +38,35 @@ export class InvoiceComponent implements OnInit{
 
   fetchOrderDetails() : void{
     
-    this.httpclient.get<any[]>('http://localhost:3000/cart')
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          const allProducts = data.flatMap(cartItem => cartItem.products);
-          console.log(allProducts);
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Invoice generated successfully",
-            showConfirmButton: false,
-            timer: 2000,
-            iconColor: 'darkcyan'
-          })
+    // this.httpclient.get<any[]>('http://localhost:3000/cart')
+    //   .subscribe({
+    //     next: (data) => {
+    //       console.log(data);
+    //       const allProducts = data.flatMap(cartItem => cartItem.products);
+    //       console.log(allProducts);
+    //       Swal.fire({
+    //         icon: 'success',
+    //         title: 'Success',
+    //         text: "Invoice generated successfully",
+    //         showConfirmButton: false,
+    //         timer: 2000,
+    //         iconColor: 'darkcyan'
+    //       })
 
-          this.invoiceData = allProducts.map(item => ({
-            product: item.product,
-            quantity: item.quantity,
-            totalValue: item.quantity * item.product.price,
-          }));
-          this.updateProductTotalPrice()
+    //       this.invoiceData = allProducts.map(item => ({
+    //         product: item.product,
+    //         quantity: item.quantity,
+    //         totalValue: item.quantity * item.product.price,
+    //       }));
+    //       this.updateProductTotalPrice()
 
          
 
-        },
-        error: (error) => {
-          console.error('Error fetching cart data:', error);
-        }
-      });
+    //     },
+    //     error: (error) => {
+    //       console.error('Error fetching cart data:', error);
+    //     }
+    //   });
   }
 
   updateProductTotalPrice(){

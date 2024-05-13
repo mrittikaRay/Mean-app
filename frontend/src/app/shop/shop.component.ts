@@ -47,34 +47,34 @@ export class ShopComponent implements OnInit {
  
 
   addToCart(event:Event,productId: string): void {
-    event.preventDefault();
-    const token = localStorage.getItem('token');
-    if(token){
-      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
-      .subscribe((response) => {
-          console.log(response);
-          const message = response.message.toString();
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: message,
-            confirmButtonText: 'OK'
-          });
-          this.showProductDetails(productId); 
-          this.cartService.fetchDataAndUpdateCount(); 
+    // event.preventDefault();
+    // const token = localStorage.getItem('token');
+    // if(token){
+    //   this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
+    //   .subscribe((response) => {
+    //       console.log(response);
+    //       const message = response.message.toString();
+    //       Swal.fire({
+    //         icon: 'success',
+    //         title: 'Success',
+    //         text: message,
+    //         confirmButtonText: 'OK'
+    //       });
+    //       this.showProductDetails(productId); 
+    //       this.cartService.fetchDataAndUpdateCount(); 
           
-        },
-      );
-    }
-    else{
-      Swal.fire({
-        icon: 'error',
-        title: 'error',
-        text: "session expired login",
-        confirmButtonText: 'OK'
-      });
-      this.router.navigate(['/'])
-    }
+    //     },
+    //   );
+    // }
+    // else{
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'error',
+    //     text: "session expired login",
+    //     confirmButtonText: 'OK'
+    //   });
+    //   this.router.navigate(['/'])
+    // }
     
   }
 

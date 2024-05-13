@@ -3,14 +3,31 @@ const productModel = require('../models/products');
 const userModel = require('../models/user.model');
 
 
+// exports.showCartData = async (req, res) => {
+//     try {
+//         const { userId } = req.params;
+
+//         if (!userId) {
+//             return res.status(400).json({ error: 'userId parameter is missing in the request body' });
+//         }
+        
+        
+//         const cart = await cartModel.find({ userId });
+
+//         res.json(cart);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// };
+
 exports.showCartData = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { userId } = req.params.userId;
 
-        if (!userId) {
-            return res.status(400).json({ error: 'userId parameter is missing in the request body' });
+        if (userId === undefined) {
+            return res.status(400).json({ error: 'userId parameter is missing in the request params' });
         }
-        
         
         const cart = await cartModel.find({ userId });
 
@@ -20,6 +37,7 @@ exports.showCartData = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 

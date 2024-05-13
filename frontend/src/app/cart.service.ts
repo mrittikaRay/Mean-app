@@ -12,25 +12,25 @@ export class CartService {
   constructor(private http: HttpClient) { }
 
   fetchDataAndUpdateCount(): void {
-    this.http.get<any[]>('http://localhost:3000/cart')
-      .subscribe({
-        next: (data) => {
-          const allProducts = data.flatMap(cartItem => cartItem.products);
-          const cartData = allProducts.map(item => ({
-            product: item.product,
-            quantity: item.quantity,
-          }));
+    // this.http.get<any[]>('http://localhost:3000/cart')
+    //   .subscribe({
+    //     next: (data) => {
+    //       const allProducts = data.flatMap(cartItem => cartItem.products);
+    //       const cartData = allProducts.map(item => ({
+    //         product: item.product,
+    //         quantity: item.quantity,
+    //       }));
 
-          const cartCount = cartData.reduce((total: number, product: any) => {
-            return total + (product.quantity || 0); 
-          }, 0);
+    //       const cartCount = cartData.reduce((total: number, product: any) => {
+    //         return total + (product.quantity || 0); 
+    //       }, 0);
 
-          this.updateCartCount(cartCount);
-        },
-        error: (error) => {
-          console.error('Error fetching cart data:', error);
-        }
-      });
+    //       this.updateCartCount(cartCount);
+    //     },
+    //     error: (error) => {
+    //       console.error('Error fetching cart data:', error);
+    //     }
+    //   });
   }
 
   updateCartCount(count: number): void {
