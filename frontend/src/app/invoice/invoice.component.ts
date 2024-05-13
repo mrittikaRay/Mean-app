@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit ,inject} from '@angular/core';;
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
 
 
 @Component({
@@ -12,7 +14,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './invoice.component.css'
 })
 export class InvoiceComponent implements OnInit{
-  httpclient = inject(HttpClient)
+  httpclient = inject(HttpClient);
+  router = inject(Router)
   invoiceData: any = [];
   totalPrice: number = 0;
 
@@ -26,7 +29,9 @@ export class InvoiceComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.fetchOrderDetails()
+    this.fetchOrderDetails();
+    this.router.resetConfig([{ path: '', redirectTo: 'invoice', pathMatch: 'full' }]);
+
   }
 
   // getCurrentDateTime(): any {
@@ -35,12 +40,21 @@ export class InvoiceComponent implements OnInit{
   // }
 
   fetchOrderDetails() : void{
+    
     this.httpclient.get<any[]>('http://localhost:3000/cart')
       .subscribe({
         next: (data) => {
           console.log(data);
           const allProducts = data.flatMap(cartItem => cartItem.products);
           console.log(allProducts);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "Invoice generated successfully",
+            showConfirmButton: false,
+            timer: 2000,
+            iconColor: 'darkcyan'
+          })
 
           this.invoiceData = allProducts.map(item => ({
             product: item.product,
@@ -48,6 +62,8 @@ export class InvoiceComponent implements OnInit{
             totalValue: item.quantity * item.product.price,
           }));
           this.updateProductTotalPrice()
+
+         
 
         },
         error: (error) => {

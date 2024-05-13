@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 
 
 
+
 export const routes: Routes = [
     {
         path: '',
@@ -46,7 +47,7 @@ export const routes: Routes = [
 
     {
         path: 'invoice',
-        component: InvoiceComponent 
+        component: InvoiceComponent ,
     },
 
     {

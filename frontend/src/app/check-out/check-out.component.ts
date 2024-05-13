@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute,Router } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import Swal from 'sweetalert2';
+
 
 interface CartItem {
   productName: string;
@@ -36,6 +38,7 @@ export class CheckOutComponent implements OnInit{
   ngOnInit(): void {
     
     this.fetchData();
+
   }
 
   fetchData(): void {
@@ -67,8 +70,8 @@ updateProductTotalPrice(): void {
 }
 
   goToInvoice(): void {
-    this.router.navigate(['/invoice'], {
-    });
+    
+    this.router.navigateByUrl('/invoice', { skipLocationChange: true });
   }
 
   
