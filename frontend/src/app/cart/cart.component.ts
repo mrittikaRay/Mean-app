@@ -94,8 +94,12 @@ export class CartComponent implements OnInit {
     this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
       .subscribe({
         next: () => {
-        
+          const currentCount = this.cartService.getCartCount();
+
+          const newCount = (currentCount - this.productsData.quantity)|0;
+
           this.productsData = this.productsData.filter((item:any) => item.product._id !== productId);
+          this.cartService.updateCartCount(newCount);
         },
         error: (error) => {
           console.error('Error removing product from cart:', error);
