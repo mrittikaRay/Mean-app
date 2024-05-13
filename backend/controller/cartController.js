@@ -1,22 +1,26 @@
 const cartModel = require('../models/cart');
 const productModel = require('../models/products');
+const userModel = require('../models/user.model');
 
 
 exports.showCartData = async (req, res) => {
     try {
         const { userId } = req.body;
-        const cartData = await cartModel.findById(userId);
 
-        if (!cartData) {
-            return res.json({});
+        if (!userId) {
+            return res.status(400).json({ error: 'userId parameter is missing in the request body' });
         }
+        
+        
+        const cart = await cartModel.find({ userId });
 
-        res.json(cartData);
+        res.json(cart);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 exports.addToCart = async (req, res) => {

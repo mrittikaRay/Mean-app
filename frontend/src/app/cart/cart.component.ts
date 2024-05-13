@@ -37,6 +37,7 @@ export class CartComponent implements OnInit {
   quantityUpdated?: boolean;
   cartItems: any[] = [];
   cartCount!: number;
+  userId : any;
 
 
   constructor(
@@ -49,8 +50,11 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    this.fetchData();
+    this.userId = localStorage.getItem('user._id')
+    if(this.userId){
+      this.fetchData();
+    }
+
     this.cartCount = this.cartService.getCartCount();
 
     this.cartService.cartCount$.subscribe(count => {
@@ -62,7 +66,7 @@ export class CartComponent implements OnInit {
 
 
   fetchData(): void {
-    this.httpclient.get<any[]>('http://localhost:3000/cart')
+    this.httpclient.get<any[]>(`http://localhost:3000/cart?userId=${this.userId}`)
       .subscribe({
         next: (data) => {
           console.log(data);
