@@ -3,27 +3,9 @@ const productModel = require('../models/products');
 const userModel = require('../models/user.model');
 
 
-// exports.showCartData = async (req, res) => {
-//     try {
-//         const { userId } = req.params;
-
-//         if (!userId) {
-//             return res.status(400).json({ error: 'userId parameter is missing in the request body' });
-//         }
-        
-        
-//         const cart = await cartModel.find({ userId });
-
-//         res.json(cart);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// };
-
 exports.showCartData = async (req, res) => {
     try {
-        const { userId } = req.params.userId;
+        const { userId } = req.params;
 
         if (userId === undefined) {
             return res.status(400).json({ error: 'userId parameter is missing in the request params' });
@@ -103,36 +85,40 @@ exports.removeFromCart = async (req, res) => {
     }
 };
 
-exports.updateQtyInCart = async (req,res) =>{
-    try{
+
+exports.updateQuantity = async (req, res) => {
+    try {
         const productId = req.params.productId;
-        console.log(productId);
-        const { quantity } = req.body;
+        const { userId, quantity } = req.body;
 
-        let cart = await cartModel.findOne();
+        // Find the cart item and update quantity
+        let cartQuery = { userId, "products.product._id": productId };
+        const cart = await cartModel.findOne(cartQuery);
 
-        if(!cart){
-            return res.status(404).json({ error: 'Cart not found' });
-
+        if (!cart) {
+            return res.status(404).json({ error: 'Cart or product not found' });
         }
 
-        const productIndex = cart.products.findIndex(item => item.product._id.toString() === productId);
-            if (productIndex === -1) {
+        // Find the index of the product in the cart
+        const productIndex = cart.products.findIndex(item => String(item.product._id) === productId);
+
+        if (productIndex === -1) {
             return res.status(404).json({ error: 'Product not found in cart' });
-            }
+        }
 
-            cart.products[productIndex].quantity = quantity;
-            await cart.save();
+        // Update the quantity of the product
+        cart.products[productIndex].quantity = quantity;
+        await cart.save();
 
-            res.json({ message: 'Quantity updated in cart successfully' });
-
-
-
-    }catch(err){
+        res.json({ message: 'Quantity updated successfully', cart });
+    } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
+
+
+
 
 // cartController.js
 
