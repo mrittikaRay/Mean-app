@@ -97,27 +97,7 @@ export class CartComponent implements OnInit {
   }
   
 
-  // removeFromCart(productId: any): void {
-  //   if (!productId) {
-  //     console.error('Product ID is undefined');
-  //     return;
-  //   }
-  //   this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
-  //     .subscribe({
-  //       next: () => {
-  //         const currentCount = this.cartService.getCartCount();
-
-  //         const newCount = (currentCount - this.productsData.quantity)|0;
-
-  //         this.productsData = this.productsData.filter((item:any) => item.product._id !== productId);
-  //         this.cartService.updateCartCount(newCount);
-  //       },
-  //       error: (error) => {
-  //         console.error('Error removing product from cart:', error);
-  //       }
-  //     });
-  // }
-  
+ 
   removeFromCart(productId: any): void {
     if (!productId) {
       console.error('Product ID is undefined');
@@ -127,13 +107,10 @@ export class CartComponent implements OnInit {
     this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
       .subscribe({
         next: () => {
-          // Remove the product from productsData
           this.productsData = this.productsData.filter((item: any) => item.product._id !== productId);
   
-          // Recalculate cartTotal based on remaining products
           this.updateProductTotalPrice();
   
-          // Update cart count
           const newCount = this.productsData.reduce((total: number, product: any) => {
             return total + (product.quantity || 0); 
           }, 0);
