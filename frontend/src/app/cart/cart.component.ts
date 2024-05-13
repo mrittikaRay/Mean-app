@@ -1,7 +1,7 @@
-import { Component, OnInit ,inject,EventEmitter, Output } from '@angular/core';
+import { Component, OnInit ,inject,EventEmitter, Output, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -41,6 +41,8 @@ export class CartComponent implements OnInit {
 
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+
     private router: Router,
     private cartService : CartService
 
@@ -50,11 +52,11 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userId = localStorage.getItem('user._id')
-    if(this.userId){
-      this.fetchData();
-    }
+    if (isPlatformBrowser(this.platformId)) {
+      this.userId = localStorage.getItem('user._id');
+   }
 
+   this.fetchData();
     this.cartCount = this.cartService.getCartCount();
 
     this.cartService.cartCount$.subscribe(count => {

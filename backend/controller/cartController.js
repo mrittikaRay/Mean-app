@@ -5,7 +5,7 @@ const userModel = require('../models/user.model');
 
 exports.showCartData = async (req, res) => {
     try {
-        const { userId } = req.body;
+        const { userId } = req.params;
 
         if (!userId) {
             return res.status(400).json({ error: 'userId parameter is missing in the request body' });

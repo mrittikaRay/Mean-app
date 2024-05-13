@@ -11,7 +11,7 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 
 router.get('/products',productController.getProducts);
 router.get('/products/:productId', productController.getProductById);
-router.get('/cart',cartController.showCartData);
+router.get('/cart/:userId',cartController.showCartData);
 router.post('/cart/add/:productId',cartController.addToCart);
 router.delete('/cart/delete/:productId', cartController.removeFromCart);
 router.put('/cart/update/:productId',cartController.updateQtyInCart);
