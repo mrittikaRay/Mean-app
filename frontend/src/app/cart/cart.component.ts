@@ -54,31 +54,34 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.userId = localStorage.getItem('user._id');
+      console.log('User ID:', this.userId);
+
    }
 
-   this.fetchData();
     this.cartCount = this.cartService.getCartCount();
 
     this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
     });
 
+    if(this.userId){
+      this.fetchData();
+    }
+
   }
 
 
 
   fetchData(): void {
-    const userId = this.userId;
-    console.log(userId);
-    
 
-    this.httpclient.get<any[]>(`http://localhost:3000/cart/${userId}`)
+  
+    this.httpclient.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
       .subscribe({
         next: (data) => {
           console.log(data);
           const allProducts = data.flatMap(cartItem => cartItem.products);
           console.log(allProducts);
-
+  
           this.productsData = allProducts.map(item => ({
             product: item.product,
             quantity: item.quantity,
@@ -86,15 +89,13 @@ export class CartComponent implements OnInit {
           }));
           this.updateProductTotalPrice();
           this.cartService.fetchDataAndUpdateCount(); 
-
-          
         },
         error: (error) => {
           console.error('Error fetching cart data:', error);
         }
       });
-}
-
+  }
+  
 
   removeFromCart(productId: any): void {
     if (!productId) {
