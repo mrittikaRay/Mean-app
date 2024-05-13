@@ -138,7 +138,8 @@ export class CartComponent implements OnInit {
 
 
 updateQuantityOnBackend(productId: string, quantity: number): void {
-  this.httpclient.put<any>(`http://localhost:3000/cart/update/${productId}`, { quantity })
+  const userId = this.userId;
+  this.httpclient.put<any>(`http://localhost:3000/cart/update/${productId}`, { quantity, userId })
       
       .subscribe({
         next: (response) => {
