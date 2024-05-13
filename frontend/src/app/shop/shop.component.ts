@@ -3,7 +3,7 @@ import { Component, OnInit,inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { CartService } from '../cart.service';
@@ -22,7 +22,8 @@ export class ShopComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    // private cartService: CartService
+    private cartService: CartService,
+    private router : Router
 
   ) { }
 
@@ -43,9 +44,13 @@ export class ShopComponent implements OnInit {
     
   }
 
+ 
+
   addToCart(event:Event,productId: string): void {
     event.preventDefault();
-    this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
+    const token = localStorage.getItem('token');
+    if(token){
+      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {})
       .subscribe((response) => {
           console.log(response);
           const message = response.message.toString();
@@ -56,10 +61,21 @@ export class ShopComponent implements OnInit {
             confirmButtonText: 'OK'
           });
           this.showProductDetails(productId); 
-          // this.cartService.addToCart(productId);
-
+          this.cartService.fetchDataAndUpdateCount(); 
+          
         },
       );
+    }
+    else{
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: "session expired login",
+        confirmButtonText: 'OK'
+      });
+      this.router.navigate(['/'])
+    }
+    
   }
 
   // fetchData(){
