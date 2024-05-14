@@ -73,6 +73,7 @@ exports.userLogout = async (req,res) =>{
         // Clear the access_token cookie
         res.clearCookie('access_token');
 
+
         // Destroy the session
         req.session.destroy();
 

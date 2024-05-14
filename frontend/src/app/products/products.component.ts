@@ -52,42 +52,37 @@ export class ProductsComponent implements OnInit {
   }
 
 
-  addToCart(event:Event,productId: string): void {
+  addToCart(event: Event, productId: string): void {
     event.preventDefault();
     const token = localStorage.getItem('token');
-    const userId = this.userId
-    if(token){
-      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, {userId})
-      .subscribe((response) => {
+    const userId = this.userId;
+    if (token) {
+      this.httpclient.post<any>(`http://localhost:3000/cart/add/${productId}`, { userId })
+        .subscribe((response) => {
           console.log(response);
           const message = response.message.toString();
-          console.log(this.userId)
+          console.log(this.userId);
           Swal.fire({
             icon: 'success',
             title: 'Success',
             text: message,
-            
           });
-          this.fetchData(); 
           const currentCount = this.cartService.getCartCount();
           const newCount = currentCount + 1;
-          this.cartService.updateCartCount(newCount);  
+          this.cartService.updateCartCount(newCount);
           this.fetchData();
-        
-        },
-      );
-    }
-    else{
+        });
+    } else {
       Swal.fire({
         icon: 'error',
-        title: 'error',
-        text: "session expired login",
+        title: 'Error',
+        text: 'Session expired. Please log in again.',
         confirmButtonText: 'OK'
       });
-      this.router.navigate(['/'])
+      this.router.navigate(['/']);
     }
-    
   }
+  
 
 
 

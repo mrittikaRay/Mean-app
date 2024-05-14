@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject, PLATFORM_ID, Inject } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -8,14 +8,17 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class CartService {
   private cartCountSubject: BehaviorSubject<number>;
-  public cartCount$: Observable<number>; 
+  public cartCount$: Observable<number>;
   userId: string | null;
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
-    const initialCount = isPlatformBrowser(this.platformId) ? localStorage.getItem('cartCount') : null;
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    const initialCount = this.getCookie('cartCount');
     this.cartCountSubject = new BehaviorSubject<number>(initialCount ? parseInt(initialCount) : 0);
-    this.cartCount$ = this.cartCountSubject.asObservable(); 
-    
+    this.cartCount$ = this.cartCountSubject.asObservable();
+
     this.userId = isPlatformBrowser(this.platformId) ? localStorage.getItem('user._id') : null;
   }
 
@@ -30,7 +33,7 @@ export class CartService {
         next: (data) => {
           const allProducts = data.flatMap(cartItem => cartItem.products);
           const cartCount = allProducts.reduce((total: number, product: any) => {
-            return total + (product.quantity || 0); 
+            return total + (product.quantity || 0);
           }, 0);
           this.updateCartCount(cartCount);
         },
@@ -42,12 +45,37 @@ export class CartService {
 
   updateCartCount(count: number): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('cartCount', count.toString());
+      this.setCookie('cartCount', count.toString(), 30); // Setting cookie expiry to 30 days
     }
     this.cartCountSubject.next(count);
   }
 
   getCartCount(): number {
     return this.cartCountSubject.value;
+  }
+
+  private setCookie(name: string, value: string, days: number): void {
+    let expires = '';
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = `; expires=${date.toUTCString()}`;
+    }
+    document.cookie = `${name}=${value || ''}${expires}; path=/`;
+  }
+
+  private getCookie(name: string): string | null {
+    const nameEQ = `${name}=`;
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1, c.length);
+      }
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
+    }
+    return null;
   }
 }
