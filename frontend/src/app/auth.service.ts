@@ -15,7 +15,9 @@ signIn (credentials:{userEmail: string, password: string}):Observable<any>{
    return this.apiservice.post('/user/login',credentials)
   }
 
- 
+ signOut(){
+  return this.apiservice.post('/user/logout', {})
+ }
 
   isAuthenticated(){
     return this.apiservice.get('/is-authenticated');

@@ -18,6 +18,6 @@ router.put('/cart/update/:productId', cartController.updateQuantity);
 router.post('/user/register',userController.userRegister);
 router.post('/user/login',userController.userLogin);
 router.get('/is-authenticated',userController.authenticated)
-router.post('/user/logout',isAuthenticated,userController.userLogout)
+router.post('/user/logout',userController.userLogout)
 
 module.exports = router;

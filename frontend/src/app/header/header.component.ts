@@ -3,6 +3,9 @@ import { CartService } from '../cart.service';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+
 
 
 
@@ -21,6 +24,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
   cartData : any = []
 
   constructor(private cartService : CartService,
+    private authservice : AuthService,
+    private router : Router,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
   
@@ -41,7 +46,18 @@ export class HeaderComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.cartCountSubscription.unsubscribe();
   }
-
+  
+  logOut(){
+    this.authservice.signOut()
+    .subscribe({next: () =>{
+      this.router.navigate(['/']);
+    },
+    error: (error) =>{
+      console.log(error);
+      
+    }
+  })
+  }
  
 
 
