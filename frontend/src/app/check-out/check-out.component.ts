@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute,Router } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -31,36 +31,44 @@ export class CheckOutComponent implements OnInit{
   cartTotal: number = 0;
   cartData: any= [];
   totalPrice: number = 0;
+  userId : any
 
-  constructor(private route: ActivatedRoute,private router: Router) {}
+  constructor(private route: ActivatedRoute,private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object,
+
+  ) {}
 
 
   ngOnInit(): void {
-    
+    if (isPlatformBrowser(this.platformId)) {
+      this.userId = localStorage.getItem('user._id');
+      console.log('User ID:', this.userId);
+
+   }
     this.fetchData();
 
   }
 
   fetchData(): void {
-    // this.httpclient.get<any[]>('')
-    //   .subscribe({
-    //     next: (data) => {
-    //       console.log(data);
-    //       const allProducts = data.flatMap(cartItem => cartItem.products);
-    //       console.log(allProducts);
+    this.httpclient.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          const allProducts = data.flatMap(cartItem => cartItem.products);
+          console.log(allProducts);
 
-    //       this.cartData = allProducts.map(item => ({
-    //         product: item.product,
-    //         quantity: item.quantity,
-    //         totalValue: item.quantity * item.product.price,
-    //       }));
-    //       this.updateProductTotalPrice()
+          this.cartData = allProducts.map(item => ({
+            product: item.product,
+            quantity: item.quantity,
+            totalValue: item.quantity * item.product.price,
+          }));
+          this.updateProductTotalPrice()
 
-    //     },
-    //     error: (error) => {
-    //       console.error('Error fetching cart data:', error);
-    //     }
-    //   });
+        },
+        error: (error) => {
+          console.error('Error fetching cart data:', error);
+        }
+      });
 }
 updateProductTotalPrice(): void {
   this.cartTotal = this.cartData.reduce((total: number, product: any) => {
