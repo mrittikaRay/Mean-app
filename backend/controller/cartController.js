@@ -20,33 +20,33 @@ exports.showCartData = async (req, res) => {
     }
 };
 
-// exports.showCartData = async (req, res) => {
-//     try {
-//         const { userId } = req.params;
+exports.showCartData = async (req, res) => {
+    try {
+        const { userId } = req.params;
 
-//         // Input validation
-//         if (!userId || typeof userId !== 'string') {
-//             return res.status(400).json({ error: 'Invalid userId parameter' });
-//         }
+        // Input validation
+        if (!userId || typeof userId !== 'string') {
+            return res.status(400).json({ error: 'Invalid userId parameter' });
+        }
 
-//         const cart = await cartModel.find({ userId });
+        const cart = await cartModel.find({ userId });
 
-//         if (!cart) {
-//             return res.status(404).json({ error: 'Cart not found for the specified user' });
-//         }
+        if (!cart) {
+            return res.status(404).json({ error: 'Cart not found for the specified user' });
+        }
 
-//         // Format the response
-//         const formattedCart = {
-//             userId: cart.userId,
-//             products: cart.products, 
-//         };
+        // Format the response
+        const formattedCart = {
+            userId: cart.userId,
+            products: cart.products, 
+        };
 
-//         res.json({ cart: formattedCart });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// };
+        res.json({ cart: formattedCart });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 
 

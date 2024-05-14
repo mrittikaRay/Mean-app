@@ -1,7 +1,7 @@
-import { Component, OnInit, inject ,OnDestroy } from '@angular/core';
+import { Component, OnInit, inject ,OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { CartService } from '../cart.service';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 
@@ -16,14 +16,21 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy{
   cartCount: number = 0;
   private cartCountSubscription!: Subscription;
-  httpclient = inject(HttpClient);
+  userId : any
+  
   cartData : any = []
 
-  constructor(private cartService : CartService) {}
+  constructor(private cartService : CartService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {}
   
 
   
   ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.userId = localStorage.getItem('user._id');
+
+   } 
     this.cartCountSubscription = this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
     });

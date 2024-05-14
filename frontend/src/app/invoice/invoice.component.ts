@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit ,inject} from '@angular/core';;
+import { Component, Inject, OnInit ,PLATFORM_ID,inject} from '@angular/core';;
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -20,15 +20,22 @@ export class InvoiceComponent implements OnInit{
   totalPrice: number = 0;
 
   currentDate: Date;
+  userId : any;
 
+  constructor(   
+     @Inject(PLATFORM_ID) private platformId: Object,
 
-  constructor(
   ) {
     this.currentDate = new Date();
 
   }
 
   ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.userId = localStorage.getItem('user._id');
+      console.log('User ID:', this.userId);
+
+   }
     this.fetchOrderDetails();
     this.router.resetConfig([{ path: '', redirectTo: 'invoice', pathMatch: 'full' }]);
 
@@ -38,35 +45,35 @@ export class InvoiceComponent implements OnInit{
 
   fetchOrderDetails() : void{
     
-    // this.httpclient.get<any[]>('http://localhost:3000/cart')
-    //   .subscribe({
-    //     next: (data) => {
-    //       console.log(data);
-    //       const allProducts = data.flatMap(cartItem => cartItem.products);
-    //       console.log(allProducts);
-    //       Swal.fire({
-    //         icon: 'success',
-    //         title: 'Success',
-    //         text: "Invoice generated successfully",
-    //         showConfirmButton: false,
-    //         timer: 2000,
-    //         iconColor: 'darkcyan'
-    //       })
+    this.httpclient.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          const allProducts = data.flatMap(cartItem => cartItem.products);
+          console.log(allProducts);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "Invoice generated successfully",
+            showConfirmButton: false,
+            timer: 2000,
+            iconColor: 'darkcyan'
+          })
 
-    //       this.invoiceData = allProducts.map(item => ({
-    //         product: item.product,
-    //         quantity: item.quantity,
-    //         totalValue: item.quantity * item.product.price,
-    //       }));
-    //       this.updateProductTotalPrice()
+          this.invoiceData = allProducts.map(item => ({
+            product: item.product,
+            quantity: item.quantity,
+            totalValue: item.quantity * item.product.price,
+          }));
+          this.updateProductTotalPrice()
 
          
 
-    //     },
-    //     error: (error) => {
-    //       console.error('Error fetching cart data:', error);
-    //     }
-    //   });
+        },
+        error: (error) => {
+          console.error('Error fetching cart data:', error);
+        }
+      });
   }
 
   updateProductTotalPrice(){

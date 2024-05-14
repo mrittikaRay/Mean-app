@@ -16,7 +16,6 @@ export class CartService {
     this.cartCountSubject = new BehaviorSubject<number>(initialCount ? parseInt(initialCount) : 0);
     this.cartCount$ = this.cartCountSubject.asObservable(); 
     
-    // Fetch user ID from local storage
     this.userId = isPlatformBrowser(this.platformId) ? localStorage.getItem('user._id') : null;
   }
 

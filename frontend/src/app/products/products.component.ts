@@ -71,7 +71,9 @@ export class ProductsComponent implements OnInit {
           this.fetchData(); 
           const currentCount = this.cartService.getCartCount();
           const newCount = currentCount + 1;
-          this.cartService.updateCartCount(newCount);          
+          this.cartService.updateCartCount(newCount);  
+          this.fetchData();
+        
         },
       );
     }

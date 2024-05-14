@@ -58,7 +58,7 @@ export class CartComponent implements OnInit {
 
    }
 
-    this.cartCount = this.cartService.getCartCount();
+   this.cartCount = this.cartService.getCartCount();
 
     this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
@@ -67,6 +67,8 @@ export class CartComponent implements OnInit {
     if(this.userId){
       this.fetchData();
     }
+
+
 
   }
 
