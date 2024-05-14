@@ -65,6 +65,27 @@ exports.authenticated = async (req,res) =>{
     }
 }
 
+exports.userLogout = async (req,res) =>{
+    try {
+        // Clear the session cookie
+        res.clearCookie('connect.sid');
+        
+        // Clear the access_token cookie
+        res.clearCookie('access_token');
+
+        // Destroy the session
+        req.session.destroy();
+
+        return res.status(200).json({ message: 'Logout successful' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+
 
 
 
