@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(private apiservice : ApiService) { }
 
-  signIn (credentials:{userEmail: string, password: string}):Observable<any>{
+signIn (credentials:{userEmail: string, password: string}):Observable<any>{
    return this.apiservice.post('/user/login',credentials)
   }
 

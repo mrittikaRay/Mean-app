@@ -27,6 +27,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials', 'true'); 
+  next();
+});
+
 app.use(session({
   secret : process.env.SECRET_KEY,
   resave: false,
@@ -39,6 +47,8 @@ app.use(session({
   cookie: {secure: "auto",httpOnly: "true", maxAge: 100*60*60*24}
 }))
 
+
+
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -48,13 +58,13 @@ app.use('/assets/images', express.static(path.join(__dirname, '../frontend/src/a
 app.use('/assets/css', express.static(path.join(__dirname, '../frontend/src/assets/css')));
 
 
-var allowCrossDomain = function(req,res,next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();  
-}
-app.use(allowCrossDomain);
+// var allowCrossDomain = function(req,res,next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   next();  
+// }
+// app.use(allowCrossDomain);
 
 // Routes setup
 app.use('/', productRoutes);
