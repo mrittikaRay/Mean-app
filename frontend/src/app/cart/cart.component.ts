@@ -113,25 +113,20 @@ export class CartComponent implements OnInit {
     this.httpclient.delete('http://localhost:3000/cart/delete/' + productId)
       .subscribe({
         next: () => {
-          // Remove the product from the productsData array
           this.productsData = this.productsData.filter((item: any) => item.product._id !== productId);
   
-          // Update the total price of products in the cart
           this.updateProductTotalPrice();
   
-          // Calculate the new cart count
           const newCount = this.productsData.reduce((total: number, product: any) => {
-            return total + (product.quantity || 0);
+            return total + (product.quantity || 0); 
           }, 0);
-  
-          // Update the cart count using CartService
           this.cartService.updateCartCount(newCount);
         },
         error: (error) => {
           console.error('Error removing product from cart:', error);
         }
       });
-  }
+  } 
   
   
   
