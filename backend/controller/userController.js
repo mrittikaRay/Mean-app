@@ -44,7 +44,7 @@ exports.userLogin = async (req, res) => {
         if (user.password !== password) {
             return res.status(401).json({ message: 'Incorrect password' });
         }
-        req.session.user = {id : user._id,userEmail: user.userEmail};
+        req.session.user = {id : user._id,userEmail: user.userEmail, userName : user.userName};
         
         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
 

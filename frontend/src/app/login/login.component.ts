@@ -38,11 +38,17 @@ export class LoginComponent{
           });
           const token = response.token;
           const userId = response.data._id;
+          const userName = response.data.userName;
+          const userEmail = response.data.userEmail;
 
         localStorage.setItem('token', token);
-        localStorage.setItem('user._id', userId)
+        localStorage.setItem('user._id', userId);
+        localStorage.setItem('userName',userName);
+        localStorage.setItem('userEmail', userEmail);
         console.log(token);
         console.log(userId);
+        console.log((userName));
+        
         
         if(token){
           this.router.navigate(['home']);

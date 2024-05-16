@@ -21,6 +21,8 @@ export class InvoiceComponent implements OnInit{
 
   currentDate: Date;
   userId : any;
+  userName : any;
+  userEmail: any;
 
   constructor(   
      @Inject(PLATFORM_ID) private platformId: Object,
@@ -33,7 +35,10 @@ export class InvoiceComponent implements OnInit{
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.userId = localStorage.getItem('user._id');
+      this.userName = localStorage.getItem('userName');
+      this.userEmail = localStorage.getItem('userEmail');
       console.log('User ID:', this.userId);
+
 
    }
     this.fetchOrderDetails();
@@ -81,5 +86,7 @@ export class InvoiceComponent implements OnInit{
       return total + (product.totalValue || 0);
     }, 0)
   }
+
+
 
 }
