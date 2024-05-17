@@ -15,6 +15,10 @@ signIn (credentials:{userEmail: string, password: string}):Observable<any>{
    return this.apiservice.post('/user/login',credentials)
   }
 
+signUp(credentials : {userName: string , userEmail : string, password: string}):Observable<any>{
+  return this.apiservice.post('/user/register',credentials)
+}
+
  signOut(){
   return this.apiservice.post('/user/logout', {})
  }
