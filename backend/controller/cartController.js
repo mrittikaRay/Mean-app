@@ -55,7 +55,7 @@ exports.showCartData = async (req, res) => {
 exports.addToCart = async (req, res) => {
     try {
         const  productId  = req.params.productId;
-        const { userId } = req.body;
+        const { userId }  = req.body;
 
         const product = await productModel.findById(productId);
         if (!product) {
@@ -120,22 +120,18 @@ exports.updateQuantity = async (req, res) => {
         const productId = req.params.productId;
         const { userId, quantity } = req.body;
 
-        // Find the cart item and update quantity
         let cartQuery = { userId, "products.product._id": productId };
         const cart = await cartModel.findOne(cartQuery);
 
         if (!cart) {
             return res.status(404).json({ error: 'Cart or product not found' });
         }
-
-        // Find the index of the product in the cart
         const productIndex = cart.products.findIndex(item => String(item.product._id) === productId);
 
         if (productIndex === -1) {
             return res.status(404).json({ error: 'Product not found in cart' });
         }
 
-        // Update the quantity of the product
         cart.products[productIndex].quantity = quantity;
         await cart.save();
 
@@ -143,6 +139,37 @@ exports.updateQuantity = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// exports.getCartCount = async (req,res) =>{
+//     try{
+//         const userId  = req.params.userId;
+//         let cartCount = await cartModel.findOne({userId});
+
+//         if(!cartCount){
+//             res.status(404).json({'products.quantity': 0});
+//             return 0;
+//         }
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// }
+
+exports.getCartCount = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const cartCount = await cartModel.findOne({ userId });
+
+        if (!cartCount) {
+            return res.status(404).json({ cartCount: 0 });
+        }
+
+        return res.status(200).json({ cartCount: cartCount.products.length });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 

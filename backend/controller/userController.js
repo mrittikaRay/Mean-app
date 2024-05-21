@@ -72,7 +72,7 @@ exports.userLogout = async (req,res) =>{
         res.clearCookie('access_token');
         req.session.destroy();
 
-        return res.status(200).json({ message: 'Logout successful' });
+        return res.status(200).json({ message: 'Logout successful' , clearLocalStorage: true });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal server error' });

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject ,OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { CartService } from '../cart.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,HttpClientModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -50,8 +50,11 @@ export class HeaderComponent implements OnInit, OnDestroy{
   }
   
   logOut(){
-    this.authservice.signOut()
-    .subscribe({next: () =>{
+    this.authservice.signOut().subscribe({
+      next: (response) =>{
+        if(response.clearLocalStorage){
+          localStorage.clear();
+        }
       this.router.navigate(['/']);
     },
     error: (error) =>{
