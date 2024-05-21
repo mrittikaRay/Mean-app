@@ -64,4 +64,11 @@
     font-size: 16px;
     text-align: center;
   }
+
+  span{
+    color: red;
+    font-size: 13px;
+    padding-left: 10px;
+  }
+
   
