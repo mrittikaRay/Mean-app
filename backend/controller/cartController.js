@@ -160,18 +160,24 @@ exports.updateQuantity = async (req, res) => {
 exports.getCartCount = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const cartCount = await cartModel.findOne({ userId });
+        const cart = await cartModel.findOne({ userId });
 
-        if (!cartCount) {
+        if (!cart) {
             return res.status(404).json({ cartCount: 0 });
         }
 
-        return res.status(200).json({ cartCount: cartCount.products.length });
+        let totalQuantity = 0;
+        cart.products.forEach(product => {
+            totalQuantity += product.quantity;
+        });
+
+        return res.status(200).json({ cartCount: totalQuantity });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 

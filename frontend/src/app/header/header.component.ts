@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit, OnDestroy{
+export class HeaderComponent implements OnInit{
   cartCount: number = 0;
   private cartCountSubscription!: Subscription;
   userId : any
@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   constructor(private cartService : CartService,
     private authservice : AuthService,
     private router : Router,
+    private httpclient : HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
   
@@ -36,11 +37,13 @@ export class HeaderComponent implements OnInit, OnDestroy{
       this.userId = localStorage.getItem('user._id');
 
    } 
+
+   this.fetchDataAndUpdateCount();
     this.cartCountSubscription = this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
     });
 
-    this.cartService.fetchDataAndUpdateCount();
+    // this.cartService.fetchDataAndUpdateCount();
     console.log(this.cartCount);
     
   } 
@@ -62,6 +65,22 @@ export class HeaderComponent implements OnInit, OnDestroy{
       
     }
   })
+  }
+
+  fetchDataAndUpdateCount() {
+    
+    let userId = this.userId;
+    this.httpclient.get<{ cartCount: number }>(`http://localhost:3000/cart-count/${userId}`)
+      .subscribe({
+        next: (data: { cartCount: any; }) => {
+          console.log(data);
+          this.cartCount = data.cartCount; 
+          console.log(this.cartCount);
+        },
+        error: (error: any) => {
+          console.error('Error fetching cart data:', error);
+        }
+    });
   }
  
 

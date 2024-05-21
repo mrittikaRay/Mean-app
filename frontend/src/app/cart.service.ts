@@ -19,26 +19,26 @@ export class CartService {
     this.userId = isPlatformBrowser(this.platformId) ? localStorage.getItem('user._id') : null;
   }
 
-  fetchDataAndUpdateCount(): void {
-    if (!this.userId) {
-      console.error('User ID is not available');
-      return;
-    }
+  // fetchDataAndUpdateCount(): void {
+  //   if (!this.userId) {
+  //     console.error('User ID is not available');
+  //     return;
+  //   }
 
-    this.http.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
-      .subscribe({
-        next: (data) => {
-          const allProducts = data.flatMap(cartItem => cartItem.products);
-          const cartCount = allProducts.reduce((total: number, product: any) => {
-            return total + (product.quantity || 0); 
-          }, 0);
-          this.updateCartCount(cartCount);
-        },
-        error: (error) => {
-          console.error('Error fetching cart data:', error);
-        }
-      });
-  }
+  //   this.http.get<any[]>(`http://localhost:3000/cart/${this.userId}`)
+  //     .subscribe({
+  //       next: (data) => {
+  //         const allProducts = data.flatMap(cartItem => cartItem.products);
+  //         const cartCount = allProducts.reduce((total: number, product: any) => {
+  //           return total + (product.quantity || 0); 
+  //         }, 0);
+  //         this.updateCartCount(cartCount);
+  //       },
+  //       error: (error) => {
+  //         console.error('Error fetching cart data:', error);
+  //       }
+  //     });
+  // }
 
   updateCartCount(count: number): void {
     if (isPlatformBrowser(this.platformId)) {
