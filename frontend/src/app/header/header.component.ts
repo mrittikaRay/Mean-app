@@ -35,10 +35,10 @@ export class HeaderComponent implements OnInit{
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.userId = localStorage.getItem('user._id');
+      this.fetchDataAndUpdateCount();
 
    } 
 
-   this.fetchDataAndUpdateCount();
     this.cartCountSubscription = this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
     });
