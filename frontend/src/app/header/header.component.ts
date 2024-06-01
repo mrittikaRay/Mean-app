@@ -19,7 +19,8 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit{
   cartCount: number = 0;
   private cartCountSubscription!: Subscription;
-  userId : any
+  userId : any;
+  logOutBtn : boolean = false
   
   cartData : any = []
 
@@ -65,6 +66,16 @@ export class HeaderComponent implements OnInit{
       
     }
   })
+  }
+
+  showlogOut(e:Event){
+    if(this.logOutBtn == false){
+      this.logOutBtn = true;
+
+    }else{
+      this.logOutBtn = false;
+    }
+      
   }
 
   fetchDataAndUpdateCount() {

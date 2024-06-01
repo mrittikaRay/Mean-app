@@ -10,18 +10,25 @@
 
       <div class="collapse navbar-collapse" id="navbarsFurni">
         <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-          <li class="nav-item ">
-            <a  class="active" class="nav-link" href="home">Home</a>
-          </li>
+          <li class="nav-item "><a class="active" class="nav-link" href="home">Home</a></li>
           <li><a class="nav-link" href="products">Products</a></li>
           <li><a class="nav-link" href="about">About us</a></li>
           <li><a class="nav-link" href="contact">Contact us</a></li>
         </ul>
 
         <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5 " >
-          <li><a class="nav-link" routerLink="#"><img src="../../assets/images/user.svg"></a></li>
-          <button class="btn btn-success" (click)="logOut()">Logout</button>
+          <li>
+            <button class="nav-link" routerLink="#" (click)="showlogOut($event)"><img  src="../../assets/images/user.svg" >
+              
+            </button>
+            <div class="bg-white mt-1" *ngIf="logOutBtn">
+              <div class="text-black py-2 px-4"  (click)="logOut()" value="log-out" style="border: 1px solid black;">Logout</div>
+              <div class="text-black py-2 px-4" value="profile" style="border: 1px solid black;">profile</div>
+            </div>
+          </li>
+          
           <li><a class="nav-link" href="cart"><img src="../../assets/images/cart.svg"><span>{{ cartCount }}</span></a></li>
+          
         </ul>
       </div>
     </div>

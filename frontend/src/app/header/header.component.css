@@ -1,0 +1,13 @@
+.bg-white.mt-1{
+    position: absolute;
+    border-radius: 13%;
+}
+.bg-white .mt-1.text-black .pt-1 .pb-1 .px-3 {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+   }
+.text-black .pt-1 .pb-1 .px-3 :hover{
+ background-color: rgb(212, 33, 33);
+ color: white;
+}
